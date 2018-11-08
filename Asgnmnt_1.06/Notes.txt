@@ -1,0 +1,1 @@
+Need to revert all the cpp files to og state. Copy over from the c backup and convert. Will have to fix all the malloc errors

@@ -1,0 +1,49 @@
+(9/7) Cloned git repo : https://github.com/wasartin/rogueLikeGame to make use of another students finished Dungeon Generation algorithm
+(9/10) added functions load() save() and begin implementation of the two methods
+(9/11) added code to main method to scan input for load and save switches
+(9/11) Working on reading and parsing file
+(9/11) Filled in main to scan for switches and handle them
+(9/12) Filled in all but last read block of load() function
+(9/13) Fixed all but last read block
+(9/13) Fixed load method, now having seg fault in main method while checking for switches
+(9/13) Added print statements to find bug in main, unsuccessful so far
+(9/14) Added final block of load function, getting unknown seg fault
+(9/14) Went to help room and Ibrahim Mesecan helped find seg fault
+(9/14) New seg fault when running fillMap(d, room)
+(9/14) Fixed seg fault, load now works as expected
+(9/14) Began implementing save, filled in first 4 write blocks
+(9/15) Finished save, implemented fillMap to fill in player character, updated README
+(9/15) Noticed possible bug, when calling load on a specific file, the code might overwrite
+the current dungeon save file.
+(9/16) Created Assignment 1.03 repo on local machine to begin working on assignment 1.03
+(9/21) Created dijkstra_non_tunnel and dijkstra_tunnel functions for filling the distances of each map
+(9/21) Created structs for non tunneling, and tunneling. Used for distance calculations, based off Professors corridor path struct
+(9/22) Began implementing dijkstral_non_tunnel with reference to Professors dijkstra corridor function
+(9/25) Finished dijkstra_non_tunnel, have a bug where it is printing only 0s. not sure where the fault
+is.
+(9/29) Did not finish dikstra for distances before due date, cloning professors code and implementing it into my solution. Fixed code formating to fit my style. Abandon ship, RIP dungeonGenerator v0.4.2
+(9/30) Filled in structs for monsters, events, and added event type to PC struct. Added variables in dungeon to store number of monsters and array of monsters. Added method gen_monsters to generate given number of monsters.
+(9/30) Added checks for --nummon switch
+(10/1) Added new_event function, get_room function. Filled in get_room, began work on implementing gen_monsters and new_event. Need to figure out how to use events.
+(10/2) Added check statement to see if there is a character at some given position, currently it is broken, need to cast to int.
+(10/2) implemented gen_monsters, should be done.
+(10/3) Code almost done, need to fix gen_monsters so it is not putting monsters on top of each other, fixed new event, removed event variable from character struct
+(10/4) Finished rough version of 1.04, not completely implemented but working.
+(10/6) Began work on ncurses
+(10/8) Added skeleton code for scanning input for ncurses
+(10/8) Tested ncurses to get familiar with functionality
+(10/9) Began working on PC movement
+(10/10) Assignment pushed back, yooo
+(10/13) Finished PC movement, begin working on monster list
+(10/15) Added stair types and code to generate stairs
+(10/15) troubleshooting stair generation
+(10/16) Fix bug with monster list, each monster is the same
+(10/17) Finished monster list, working on stairs
+(10/18) Some stuff missing, monster list shows actual position, no stairs
+(10/18) Fixed monster list, position is now relative to PC, still no stairs
+(10/21) Cloned Professor's solution, begin reading about c++ conversion
+(10/22) Convered all .c to .cpp files, begin fixing compile errors
+(10/23) Fixing more compile errors
+(10/24) I can get the code to compile and run with the new cpp extension, but I have to remove the W flags, fix?
+(10/25) Left make file without w flags. Giving up on fog of war. Can't figure out solution.
+(11/4) Created item class to store instanciated objects. Begin implementing items

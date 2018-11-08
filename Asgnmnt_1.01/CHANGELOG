@@ -1,0 +1,6 @@
+(9/7) Cloned git repo : https://github.com/wasartin/rogueLikeGame to make use of another students finished Dungeon Generation algorithm
+(9/10) added functions load() save() and begin implementation of the two methods
+(9/11) added code to main method to scan input for load and save switches
+(9/11) Working on reading and parsing file
+(9/11) Filled in main to scan for switches and handle them
+(9/11) Filled in all but last read block of load() function

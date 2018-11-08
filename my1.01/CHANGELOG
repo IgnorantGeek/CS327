@@ -1,0 +1,13 @@
+This is a rough changelog:
+(8/30)Created Dungeongen.c 
+(8/30)created skeleton functions, added: isValid(), createRoom(), fillCorr(), fillRocks(), main().
+(8/30)Created 'dugeon' variable 2D matrix 80x21
+(8/30)Implemented isEmpty() by checking if the position in the 2D matrix is isEmpty
+(8/31)Implemented fillRock to fill all empty cells
+(9/4)Filled dungeon border in main, Filled printDungeon method
+(9/4)Fixed main to initialize dungeon matrix with spaces and borders.
+(9/4)Fixing and implementing isValid
+(9/4)Fixed and implemented createRoom
+(9/4)Fixed and implemented isValid
+(9/4)Fixed room placement error where rooms stack on top
+(9/4)Begin working on fillCorr()

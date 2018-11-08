@@ -1,0 +1,45 @@
+Understanding the Structs
+      The dungeon struct holds an array of the struct room, numOfRooms, a map (what the player sees), 
+      and a coresspondingMap(holds the hardness values). 
+
+      A room consists of a structure for points, width, and height. The struct for 
+      Points comes from the book Ansi C Programming by Kernighan and Ritchie in their chapter 6 Structures. 
+      They have an example of making a rectangle struct that had a point struct that held the coordinates.
+
+General algorithm:
+	1.) Check for random Value seed, if not make one.
+	2.) Create Dungeon
+	    a.) Generate Rooms
+	         -select random number of rooms to make (5-9).
+		 -select random width and height
+		 -load room into Dungeon room array
+	    b.) Place Rooms
+	         -While there are rooms left to write
+		      1. Select random Coordinate in Dungeon Map
+		      2. Check if Room can be placed there
+		      3. Place Room (write periods)
+	    c.) sort Rooms by Coordinates
+	         -While there are rooms left to sort
+		      1. Sort by point 1 with precedence on column than row (Selection Sort)
+	    d.) connect Rooms 
+	         - Set currentCoordinate to point 2 of first room, and destination Coordinate to point 1 of second room
+		 - While current Coordinate != destination Coordinate
+		      1. Find difference between their row and col.
+		      2. If row Difference > column difference
+		           a. Increment or decrement current row to destination row
+		      3. Else  
+		           a. Increment or decrement current column to destination column
+                      4. Write Corridor
+	3.) Print Map 
+
+General Notes
+	-I don't like how I am placing rooms. in the method int isLegalPlace(...) I am making the points for the
+	     room, that doesn't feel like the right spot. Plus if this isn't a legal place, then I am wasting
+	     time making point 1 and point 2.
+	-I don't know if I correctly implemented the hardness values. The only idea I had for checking if I did 
+	     right is to just print out all the values. This was just a lot of information in the console.
+	     I had ideas to check if I was doing it right, but it seemed too much effort for right now. So
+	     I am just leaving it the way it is.
+	-Feels sloppy that I am making rooms, placing them, then sorting them for my connectRooms(...).
+	     Got to be a nice way to execute that.
+	-Feel free to make suggestions to this. I would love to improve it.

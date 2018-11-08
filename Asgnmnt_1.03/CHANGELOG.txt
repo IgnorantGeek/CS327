@@ -1,0 +1,24 @@
+(9/7) Cloned git repo : https://github.com/wasartin/rogueLikeGame to make use of another students finished Dungeon Generation algorithm
+(9/10) added functions load() save() and begin implementation of the two methods
+(9/11) added code to main method to scan input for load and save switches
+(9/11) Working on reading and parsing file
+(9/11) Filled in main to scan for switches and handle them
+(9/12) Filled in all but last read block of load() function
+(9/13) Fixed all but last read block
+(9/13) Fixed load method, now having seg fault in main method while checking for switches
+(9/13) Added print statements to find bug in main, unsuccessful so far
+(9/14) Added final block of load function, getting unknown seg fault
+(9/14) Went to help room and Ibrahim Mesecan helped find seg fault
+(9/14) New seg fault when running fillMap(d, room)
+(9/14) Fixed seg fault, load now works as expected
+(9/14) Began implementing save, filled in first 4 write blocks
+(9/15) Finished save, implemented fillMap to fill in player character, updated README
+(9/15) Noticed possible bug, when calling load on a specific file, the code might overwrite 
+the current dungeon save file.
+(9/16) Created Assignment 1.03 repo on local machine to begin working on assignment 1.03
+(9/21) Created dijkstra_non_tunnel and dijkstra_tunnel functions for filling the distances of each map
+(9/21) Created structs for non tunneling, and tunneling. Used for distance calculations, based off Professors corridor path struct
+(9/22) Began implementing dijkstral_non_tunnel with reference to Professors dijkstra corridor function
+(9/25) Finished dijkstra_non_tunnel, have a bug where it is printing only 0s. not sure where the fault
+is.
+(9/29) Did not finish dikstra for distances before due date, cloning professors code and implementing it into my solution. Fixed code formating to fit my style. Abandon ship, RIP dungeonGenerator v0.4.2

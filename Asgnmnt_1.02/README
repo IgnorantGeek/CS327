@@ -1,0 +1,22 @@
+Load and Save functionality
+	This version of dungeonGenerator implements load and save features for dungeons. The player
+	can load previously saved dungeons by calling : ./dungeonGenerator --load after compiling.
+	The player can also save a generated dungeon in the same way by calling --save instead of load,
+	this call will generate a dungeon, then write it to the save location. The save file is  
+	locted in ~/.rlg327/dungeon. PC location data has also been added and is stored in the 
+	Dungeon struct as Dungeon.PC. PC is of type struct Coordinate and stores the coordinates of
+	the current play position. Code now prints the Player character, sets PC to be the first position        in the first room.
+
+Load/Save algorithm:
+	1.) Check command line for switches
+		a.) if switch == --load
+			-load the dungeon
+		b.) else 
+			-generate new dungeon
+		c.) if switch == --save 
+			-write current dungeon
+
+General Notes
+	-Known Bug: Code might overwrite dungeon save file when loading new file, need to check logic
+         of calling --load <file> 
+
