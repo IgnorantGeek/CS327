@@ -111,4 +111,5 @@ int read_pgm(dungeon *d, char *pgm);
 void render_distance_map(dungeon *d);
 void render_tunnel_distance_map(dungeon *d);
 void convert_to_items(dungeon *d);
+char get_symbol(item *i);
 #endif

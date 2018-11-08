@@ -1051,6 +1051,17 @@ void print_items(dungeon *d)
 			if (itemxy(j, i).name != "")
 			{
 				std::cout << itemxy(j, i).name << std::endl;
+				std::cout << itemxy(j,i).type << std::endl;
+				std::cout<< itemxy(j,i).color << std::endl;
+				std::cout<< itemxy(j,i).hit << " " << itemxy(j,i).dodge << " " << itemxy(j,i).defense << " " << 
+					itemxy(j,i).weight << " " << itemxy(j,i).speed << " " << itemxy(j,i).attribute << " " << itemxy(j,i).value
+					<< std::endl;
+				std::cout<< itemxy(j,i).damage << std::endl;
+				std::cout<< itemxy(j,i).artifact << std::endl;
+				std::cout<< itemxy(j,i).rarity << std::endl;
+				std::cout<< itemxy(j,i).position[dim_x] << " " << itemxy(j,i).position[dim_y] << std::endl;
+				std::cout << get_symbol(&itemxy(j,i)) << std::endl;
+				std::cout << std::endl;
 			}
 		}
 	}
@@ -1089,3 +1100,52 @@ void convert_to_items(dungeon_t *d)
 		itempair(newItem.position) = newItem;
 	}
 }
+
+char get_symbol(item *i)
+{
+	object_type obj = i->type;
+	switch (obj)
+	{
+		case objtype_no_type:
+			return '*';
+		case objtype_WEAPON:
+			return '|';
+		case objtype_OFFHAND:
+			return ')';
+		case objtype_RANGED:
+			return '}';
+		case objtype_LIGHT:
+			return '_';
+		case objtype_ARMOR:
+			return '[';
+		case objtype_HELMET:
+			return ']';
+		case objtype_CLOAK:
+			return '(';
+		case objtype_GLOVES:
+			return '{';
+		case objtype_BOOTS:
+			return '\\';
+		case objtype_AMULET:
+			return '"';
+		case objtype_RING:
+			return '=';
+		case objtype_SCROLL:
+			return '~';
+		case objtype_BOOK:
+			return '?';
+		case objtype_FLASK:
+			return '!';
+		case objtype_GOLD:
+			return '$';
+		case objtype_AMMUNITION:
+			return '/';
+		case objtype_FOOD:
+			return ',';
+		case objtype_WAND:
+			return '-';
+		case objtype_CONTAINER:
+			return '%';
+	}
+}
+

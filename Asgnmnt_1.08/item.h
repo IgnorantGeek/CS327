@@ -22,6 +22,7 @@ class item
 		uint32_t rarity;
 		pair_t position;
 		std::string getName() {return name;}
+		char get_symbol(object_type obj);
 };
 
 void randomize_pos(item *i);
