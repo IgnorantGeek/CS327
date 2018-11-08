@@ -247,12 +247,11 @@ void io_display(dungeon *d)
 			{
 				mvaddch(y + 1, x,character_get_symbol(d->character_map[y][x]));
 				visible_monsters++;
-			} 
+			}
 			else 
 			{
 				switch (pc_learned_terrain(d->PC, y, x)) 
 				{
-					if (itemxy(x,y).name != "") mvaddch(y+1,x, get_symbol(&itemxy(x,y))); //This needs to be fixed to incorperate the proper weapon symbols
 					case ter_wall:
 					case ter_wall_immutable:
 					case ter_unknown:
@@ -331,7 +330,11 @@ void io_display_no_fog(dungeon *d)
 			if (d->character_map[y][x]) 
 			{
 				mvaddch(y + 1, x, d->character_map[y][x]->symbol);
-			} 
+			}
+			else if (itemxy(x,y).name != "")
+			{
+				mvaddch(y+1, x, get_symbol(&itemxy(x,y)));
+			}
 			else 
 			{
 				switch (mapxy(x, y)) 

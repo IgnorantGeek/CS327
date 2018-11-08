@@ -1042,7 +1042,6 @@ void new_dungeon(dungeon *d)
 }
 void print_items(dungeon *d)
 {
-	item *nextItem;
 	int i, j;
 	for (i = 0; i < DUNGEON_Y; i++)
 	{
@@ -1065,6 +1064,20 @@ void print_items(dungeon *d)
 			}
 		}
 	}
+}
+
+void place_item(dungeon_t *d, item *i)
+{
+	//place the item in some room in the dungeon
+	int randx, randy;
+	randx = randy = 0;
+	while (hardnessxy(randx,randy) != 0)
+	{
+		randx = rand_range(0, DUNGEON_X);
+		randy = rand_range(0, DUNGEON_Y);
+	}
+	i->position[dim_x] = randx;
+	i->position[dim_y] = randy;
 }
 
 //TODO
@@ -1096,8 +1109,8 @@ void convert_to_items(dungeon_t *d)
 		newItem.dodge = hold.roll();
 		hold = o.get_value();
 		newItem.dodge = hold.roll();
-		randomize_pos(&newItem);
-		itempair(newItem.position) = newItem;
+		place_item(d,&newItem);
+		itempair(newItem.position) = newItem; //this line is giving a seg fault
 	}
 }
 
@@ -1147,5 +1160,5 @@ char get_symbol(item *i)
 		case objtype_CONTAINER:
 			return '%';
 	}
+	return '*';//default return debug character
 }
-

@@ -175,7 +175,7 @@ void do_moves(dungeon *d)
     heap_insert(&d->events, update_event(d, e, 1000 / c->speed));
   }
 
-  io_display(d);
+  io_display_no_fog(d);
   if (pc_is_alive(d) && e->c == d->PC) {
     c = e->c;
     d->time = e->time;

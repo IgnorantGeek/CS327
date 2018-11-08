@@ -85,14 +85,7 @@ int main(int argc, char *argv[])
   char *save_file;
   char *load_file;
   char *pgm_file;
-
-	init_dungeon(&d);
-  parse_descriptions(&d);
-	convert_to_items(&d);
-  destroy_descriptions(&d);
-	print_items(&d);
-
-  return 0;
+	parse_descriptions(&d);
 
   /* Default behavior: Seed with the time, generate a new dungeon, *
    * and don't write to disk.                                      */
@@ -206,6 +199,8 @@ int main(int argc, char *argv[])
 
   io_init_terminal();
   init_dungeon(&d);
+	convert_to_items(&d);
+  destroy_descriptions(&d);
 
   if (do_load) {
     read_dungeon(&d, load_file);
@@ -219,14 +214,14 @@ int main(int argc, char *argv[])
   config_pc(&d);
   gen_monsters(&d);
 
-  io_display(&d);
+  io_display_no_fog(&d);
   if (!do_load && !do_image) {
     io_queue_message("Seed is %u.", seed);
   }
   while (pc_is_alive(&d) && dungeon_has_npcs(&d) && !d.quit) {
     do_moves(&d);
   }
-  io_display(&d);
+  io_display_no_fog(&d);
 
   io_reset_terminal();
 

@@ -47,3 +47,9 @@ is.
 (10/24) I can get the code to compile and run with the new cpp extension, but I have to remove the W flags, fix?
 (10/25) Left make file without w flags. Giving up on fog of war. Can't figure out solution.
 (11/4) Created item class to store instanciated objects. Begin implementing items
+(11/4) Created item dungeon to store item locations
+(11/5) Struggling with items
+(11/6) Printing items works, just need to access them
+(11/6) Issues with item map
+(11/7) Have to redo the item map
+(11/8) ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS
