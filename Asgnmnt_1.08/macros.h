@@ -114,12 +114,13 @@ extern "C" {
    _s;                                                                     \
 })
 
-#  define free(ptr) ({                              \
-   typeof (ptr) _p = (ptr);                         \
-/*   dfree(_p);*/                                   \
-   free(_p);                                        \
+#  ifndef __cplusplus
+#   define free(ptr) ({                              \
+    typeof (ptr) _p = (ptr);                         \
+/*    dfree(_p);*/                                   \
+    free(_p);                                        \
 })
-
+#   endif
 # endif /* __OPTIMIZE__ */
 
 /* swap() collides with names in the STL in recent versions of G++ */

@@ -1,6 +1,6 @@
-#include <stdlib.h>
-
-#include "string.h"
+#include <cstdlib>
+#include <ncurses.h>
+#include <cstring>
 
 #include "dungeon.h"
 #include "pc.h"
@@ -8,6 +8,7 @@
 #include "move.h"
 #include "path.h"
 #include "io.h"
+#include "object.h"
 
 uint32_t pc_is_alive(dungeon *d)
 {
@@ -29,9 +30,10 @@ void place_pc(dungeon *d)
 
 void config_pc(dungeon *d)
 {
+  static dice pc_dice(0, 1, 4);
+
   d->PC = new pc;
 
-  memset(d->PC, 0, sizeof (*d->PC));
   d->PC->symbol = '@';
 
   place_pc(d);
@@ -40,8 +42,11 @@ void config_pc(dungeon *d)
   d->PC->alive = 1;
   d->PC->sequence_number = 0;
   d->PC->kills[kill_direct] = d->PC->kills[kill_avenged] = 0;
-
-  d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->PC;
+  d->PC->color.push_back(COLOR_WHITE);
+  d->PC->damage = &pc_dice;
+  d->PC->name = "Avatar Krysta"; //PC name field
+	d->PC->hp = 100;
+  d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
   dijkstra(d);
   dijkstra_tunnel(d);
@@ -232,10 +237,156 @@ void pc_observe_terrain(pc *p, dungeon *d)
     can_see(d, p->position, where, 1, 1);
     where[dim_y] = y_max;
     can_see(d, p->position, where, 1, 1);
-  }       
+  }
 }
 
 int32_t is_illuminated(pc *p, int16_t y, int16_t x)
 {
   return p->visible[y][x];
+}
+
+void pc_see_object(character *the_pc, object *o)
+{
+  if (o) {
+    o->has_been_seen();
+  }
+}
+
+//adds object to equipment, returns 0 if successful
+int32_t wear_object(pc *p, int carryslot)
+{
+  object *o = p->carry[carryslot];
+  switch (o->get_type())
+  {
+    case objtype_WEAPON:
+      if (p->equipment[0] == NULL)
+      {
+        p->equipment[0] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[0];
+        p->carry[carryslot] = hold;
+        p->equipment[0] = o;
+      }
+      break;
+    case objtype_OFFHAND:
+    if (p->equipment[1] == NULL)
+    {
+      p->equipment[1] = o;
+    }
+    else
+    {
+      object *hold = p->equipment[1];
+      p->carry[carryslot] = hold;
+      p->equipment[1] = o;
+    }
+      break;
+    case objtype_RANGED:
+      if (p->equipment[2] == NULL)
+      {
+        p->equipment[2] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[2];
+        p->carry[carryslot] = hold;
+        p->equipment[2] = o;
+      }
+      break;
+    case objtype_ARMOR:
+      if (p->equipment[3] == NULL)
+      {
+        p->equipment[3] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[3];
+        p->carry[carryslot] = hold;
+        p->equipment[3] = o;
+      }
+      break;
+    case objtype_HELMET:
+      if (p->equipment[4] == NULL)
+      {
+        p->equipment[4] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[4];
+        p->carry[carryslot] = hold;
+        p->equipment[4] = o;
+      }
+      break;
+    case objtype_CLOAK:
+      if (p->equipment[5] == NULL)
+      {
+        p->equipment[5] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[5];
+        p->carry[carryslot] = hold;
+        p->equipment[5] = o;
+      }
+      break;
+    case objtype_GLOVES:
+      if (p->equipment[6] == NULL)
+      {
+        p->equipment[6] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[6];
+        p->carry[carryslot] = hold;
+        p->equipment[6] = o;
+      }
+      break;
+    case objtype_BOOTS:
+      if (p->equipment[7] == NULL)
+      {
+        p->equipment[7] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[7];
+        p->carry[carryslot] = hold;
+        p->equipment[7] = o;
+      }
+      break;
+    case objtype_AMULET:
+      if (p->equipment[8] == NULL)
+      {
+        p->equipment[8] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[8];
+        p->carry[carryslot] = hold;
+        p->equipment[8] = o;
+      }
+      break;
+    case objtype_LIGHT:
+      if (p->equipment[9] == NULL)
+      {
+        p->equipment[9] = o;
+      }
+      else
+      {
+        object *hold = p->equipment[9];
+        p->carry[carryslot] = hold;
+        p->equipment[9] = o;
+      }
+      break;
+    case objtype_RING:
+      //special because there are two ring slots
+      break;
+  }
+  return 1;
+}
+
+//adds object to carry, returns 0 if succesful
+int32_t takeoff_object(pc *p, int equipslot)
+{
+  return 1;
 }

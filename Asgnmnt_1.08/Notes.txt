@@ -1,5 +1,0 @@
-Need to add code to store objects, and modify code for monster structs to read from the monster description files
-Maybe need to have a method in descriptions that writes the descriptions to a data class. This could also be in a separate file
-
-Salvage Mode
-

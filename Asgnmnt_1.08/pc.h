@@ -7,10 +7,22 @@
 # include "character.h"
 # include "dungeon.h"
 
-class pc : public character {
+class pc : public character
+{
  public:
+  ~pc() {}
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
+	object *equipment[12]; //equipment slots, array should be 12 long
+	/* equipment slots should have specific slots for each type
+	 * ie it has 1 WEAPON slot, 1 OFFHAND, 2 RING, 1 RANGED, etc.
+   * so when adding to equipment, check the type of the object, if the type
+   * matches an open slot, fill it, if not, need to figure out what to do
+   * probaby just add to carry or prompt a "swap" command I suppose
+	 */
+	object *carry[10]; //carry slots, array should be 10 long
+	char eslots[13] = "abcdefghijkl"; //'marker' array for equipment slots
+	//get the correct object in equipment by matching players input letter to the array position from this array
 };
 
 void pc_delete(pc *pc);
@@ -25,5 +37,7 @@ void pc_init_known_terrain(pc *p);
 void pc_observe_terrain(pc *p, dungeon *d);
 int32_t is_illuminated(pc *p, int16_t y, int16_t x);
 void pc_reset_visibility(pc *p);
+int32_t equip_object(pc *p, object *obj); //returns 0 if pickup successful, 1 otherwise
+int32_t carry_object(pc *p, object *obj); //returns 0 if pickup successful, 1 otherwise
 
 #endif

@@ -15,6 +15,7 @@
 #include "dice.h"
 #include "character.h"
 #include "utils.h"
+#include "event.h"
 
 #define MONSTER_FILE_SEMANTIC          "RLG327 MONSTER DESCRIPTION"
 #define MONSTER_FILE_VERSION           1U
@@ -94,7 +95,7 @@ static const struct {
   { 0, objtype_no_type }
 };
 
-extern const char object_symbol[] = {
+const char object_symbol[] = {
   '*', /* objtype_no_type */
   '|', /* objtype_WEAPON */
   ')', /* objtype_OFFHAND */
@@ -1061,4 +1062,23 @@ return o << hit << std::endl << damage << std::endl << dodge << std::endl
 std::ostream &operator<<(std::ostream &o, object_description &od)
 {
   return od.print(o);
+}
+
+npc *monster_description::generate_monster(dungeon *d)
+{
+  npc *n;
+  std::vector<monster_description> &v = d->monster_descriptions;
+  uint32_t i;
+
+  while (!v[(i = (rand() % v.size()))].can_be_generated() ||
+         !v[i].pass_rarity_roll())
+    ;
+
+  monster_description &m = v[i];
+
+  n = new npc(d, m);
+
+  heap_insert(&d->events, new_event(d, event_character_turn, n, 0));
+
+  return n;
 }

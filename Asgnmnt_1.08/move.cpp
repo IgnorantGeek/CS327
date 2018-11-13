@@ -14,6 +14,7 @@
 #include "path.h"
 #include "event.h"
 #include "io.h"
+#include "npc.h"
 
 void do_combat(dungeon *d, character *atk, character *def)
 {
@@ -60,13 +61,19 @@ void do_combat(dungeon *d, character *atk, character *def)
       d->num_monsters--;
     } else {
       if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {
-        io_queue_message("As the %c eats your %s, "
-                         "you wonder if there is an afterlife.",
-                         atk->symbol, organs[part]);
+        io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
+                         atk->name, organs[rand() % (sizeof (organs) /
+                                                     sizeof (organs[0]))]);
+        io_queue_message("   ...you wonder if there is an afterlife.");
+        /* Queue an empty message, otherwise the game will not pause for *
+         * player to see above.                                          */
+        io_queue_message("");
       } else {
         io_queue_message("Your last thoughts fade away as "
-                         "the %c eats your %s...",
-                         atk->symbol, organs[part]);
+                         "%s%s eats your %s...",
+                         is_unique(atk) ? "" : "the ",
+                         atk->name, organs[part]);
+        io_queue_message("");
       }
       /* Queue an empty message, otherwise the game will not pause for *
        * player to see above.                                          */
@@ -78,7 +85,7 @@ void do_combat(dungeon *d, character *atk, character *def)
   }
 
   if (atk == d->PC) {
-    io_queue_message("You smite the %c!", def->symbol);
+    io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
   }
 
   can_see_atk = can_see(d, character_get_pos(d->PC),
@@ -88,15 +95,19 @@ void do_combat(dungeon *d, character *atk, character *def)
 
   if (atk != d->PC && def != d->PC) {
     if (can_see_atk && !can_see_def) {
-      io_queue_message("The %c callously murders some poor, "
-                       "defenseless creature.", atk->symbol);
+      io_queue_message("%s%s callously murders some poor, "
+                       "defenseless creature.",
+                       is_unique(atk) ? "" : "The ", atk->name);
     }
     if (can_see_def && !can_see_atk) {
-      io_queue_message("Something kills the helpless %c.", def->symbol);
+      io_queue_message("Something kills %s%s.",
+                       is_unique(def) ? "" : "the helpless ", def->name);
     }
     if (can_see_atk && can_see_def) {
-      io_queue_message("You watch in abject horror as the %c "
-                       "gruesomely murders the %c!", atk->symbol, def->symbol);
+      io_queue_message("You watch in abject horror as %s%s "
+                       "gruesomely murders %s%s!",
+                       is_unique(atk) ? "" : "the ", atk->name,
+                       is_unique(def) ? "" : "the ", def->name);
     }
   }
 }
@@ -138,7 +149,7 @@ void do_moves(dungeon *d)
      * We generate one manually so that we can set the PC sequence       *
      * number to zero.                                                   */
     e = (event *) malloc(sizeof (*e));
-    e->type = event_characterurn;
+    e->type = event_character_turn;
     /* Hack: New dungeons are marked.  Unmark and ensure PC goes at d->time, *
      * otherwise, monsters get a turn before the PC.                         */
     if (d->is_new) {
@@ -154,9 +165,9 @@ void do_moves(dungeon *d)
 
   while (pc_is_alive(d) &&
          (e = (event *) heap_remove_min(&d->events)) &&
-         ((e->type != event_characterurn) || (e->c != d->PC))) {
+         ((e->type != event_character_turn) || (e->c != d->PC))) {
     d->time = e->time;
-    if (e->type == event_characterurn) {
+    if (e->type == event_character_turn) {
       c = e->c;
     }
     if (!c->alive) {
@@ -175,7 +186,7 @@ void do_moves(dungeon *d)
     heap_insert(&d->events, update_event(d, e, 1000 / c->speed));
   }
 
-  io_display_no_fog(d);
+  io_display(d);
   if (pc_is_alive(d) && e->c == d->PC) {
     c = e->c;
     d->time = e->time;

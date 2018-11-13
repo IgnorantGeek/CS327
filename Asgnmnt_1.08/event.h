@@ -5,12 +5,12 @@
 
 # include "dungeon.h"
 
-typedef enum eventype {
-  event_characterurn,
-} eventype_t;
+enum event_type {
+  event_character_turn,
+};
 
 struct event {
-  eventype_t type;
+  event_type type;
   uint32_t time;
   uint32_t sequence;
   union {
@@ -19,7 +19,7 @@ struct event {
 };
 
 int32_t compare_events(const void *event1, const void *event2);
-event *new_event(dungeon *d, eventype_t t, void *v, uint32_t delay);
+event *new_event(dungeon *d, event_type t, void *v, uint32_t delay);
 event *update_event(dungeon *d, event *e, uint32_t delay);
 void event_delete(void *e);
 

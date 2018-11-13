@@ -13,7 +13,7 @@
 #include "pc.h"
 #include "npc.h"
 #include "io.h"
-#include "item.h"
+#include "object.h"
 
 #define DUMP_HARDNESS_IMAGES 0
 
@@ -611,6 +611,7 @@ void delete_dungeon(dungeon *d)
   free(d->rooms);
   heap_delete(&d->events);
   memset(d->character_map, 0, sizeof (d->character_map));
+  destroy_objects(d);
 }
 
 void init_dungeon(dungeon *d)
@@ -618,6 +619,8 @@ void init_dungeon(dungeon *d)
   empty_dungeon(d);
   memset(&d->events, 0, sizeof (d->events));
   heap_init(&d->events, compare_events, event_delete);
+  memset(d->character_map, 0, sizeof (d->character_map));
+  memset(d->objmap, 0, sizeof (d->objmap));
 }
 
 int write_dungeon_map(dungeon *d, FILE *f)
@@ -1039,126 +1042,5 @@ void new_dungeon(dungeon *d)
   d->character_map[d->PC->position[dim_y]][d->PC->position[dim_x]] = d->PC;
 
   gen_monsters(d);
-}
-void print_items(dungeon *d)
-{
-	int i, j;
-	for (i = 0; i < DUNGEON_Y; i++)
-	{
-		for (j = 0; j < DUNGEON_X; j++)
-		{
-			if (itemxy(j, i).name != "")
-			{
-				std::cout << itemxy(j, i).name << std::endl;
-				std::cout << itemxy(j,i).type << std::endl;
-				std::cout<< itemxy(j,i).color << std::endl;
-				std::cout<< itemxy(j,i).hit << " " << itemxy(j,i).dodge << " " << itemxy(j,i).defense << " " << 
-					itemxy(j,i).weight << " " << itemxy(j,i).speed << " " << itemxy(j,i).attribute << " " << itemxy(j,i).value
-					<< std::endl;
-				std::cout<< itemxy(j,i).damage << std::endl;
-				std::cout<< itemxy(j,i).artifact << std::endl;
-				std::cout<< itemxy(j,i).rarity << std::endl;
-				std::cout<< itemxy(j,i).position[dim_x] << " " << itemxy(j,i).position[dim_y] << std::endl;
-				std::cout << get_symbol(&itemxy(j,i)) << std::endl;
-				std::cout << std::endl;
-			}
-		}
-	}
-}
-
-void place_item(dungeon_t *d, item *i)
-{
-	//place the item in some room in the dungeon
-	int randx, randy;
-	randx = randy = 0;
-	while (hardnessxy(randx,randy) != 0)
-	{
-		randx = rand_range(0, DUNGEON_X);
-		randy = rand_range(0, DUNGEON_Y);
-	}
-	i->position[dim_x] = randx;
-	i->position[dim_y] = randy;
-}
-
-//TODO
-//Need to make sure that parse_object_descriptions is called before this method gets called.
-void convert_to_items(dungeon_t *d)
-{
-	item newItem;
-	object_description o;
-	int i;
-	for (i = 0; i < (int) d->object_descriptions.size(); i++)
-	{
-		o = d->object_descriptions[i];
-		newItem.name = o.get_name();
-		newItem.description = o.get_description();
-		newItem.type = o.get_type();
-		newItem.color = o.get_color();
-		newItem.damage = o.get_damage();
-		dice hold = o.get_hit();
-		newItem.hit = hold.roll();
-		hold = o.get_dodge();
-		newItem.dodge = hold.roll();
-		hold = o.get_defence();
-		newItem.dodge = hold.roll();
-		hold = o.get_weight();
-		newItem.dodge = hold.roll();
-		hold = o.get_speed();
-		newItem.dodge = hold.roll();
-		hold = o.get_attribute();
-		newItem.dodge = hold.roll();
-		hold = o.get_value();
-		newItem.dodge = hold.roll();
-		place_item(d,&newItem);
-		itempair(newItem.position) = newItem; //this line is giving a seg fault
-	}
-}
-
-char get_symbol(item *i)
-{
-	object_type obj = i->type;
-	switch (obj)
-	{
-		case objtype_no_type:
-			return '*';
-		case objtype_WEAPON:
-			return '|';
-		case objtype_OFFHAND:
-			return ')';
-		case objtype_RANGED:
-			return '}';
-		case objtype_LIGHT:
-			return '_';
-		case objtype_ARMOR:
-			return '[';
-		case objtype_HELMET:
-			return ']';
-		case objtype_CLOAK:
-			return '(';
-		case objtype_GLOVES:
-			return '{';
-		case objtype_BOOTS:
-			return '\\';
-		case objtype_AMULET:
-			return '"';
-		case objtype_RING:
-			return '=';
-		case objtype_SCROLL:
-			return '~';
-		case objtype_BOOK:
-			return '?';
-		case objtype_FLASK:
-			return '!';
-		case objtype_GOLD:
-			return '$';
-		case objtype_AMMUNITION:
-			return '/';
-		case objtype_FOOD:
-			return ',';
-		case objtype_WAND:
-			return '-';
-		case objtype_CONTAINER:
-			return '%';
-	}
-	return '*';//default return debug character
+  gen_objects(d);
 }
