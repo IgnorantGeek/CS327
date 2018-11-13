@@ -872,8 +872,9 @@ void io_list_equipment(dungeon *d)
    * for each inventory slot, list the letter associated with it, followed by
    * object type, followed by info, if an object is present. Leave blank if no
    * object (maybe put null idk) */
-  mvprintw(3,9, " %-60s "); //use this command to print to the nucurses screen
-
+  int i;
+  char (*s)[60]; //What exactly does this store? Confused on the data type
+  mvprintw(3,9, " %-60s ", "");
 }
 
 void io_list_carry(dungeon *d)
