@@ -379,7 +379,21 @@ int32_t wear_object(pc *p, int carryslot)
       }
       break;
     case objtype_RING:
-      //special because there are two ring slots
+      if (p->equipment[10] == NULL)
+      {
+        p->equipment[10] = o;
+      }
+      else if(p->equipment[11] == NULL)
+      {
+        p->equipment[11] = o;
+      }
+      else 
+      {
+        //swaps second ring for a carry
+        object *hold = p->equipment[11];
+        p->carry[carryslot] = hold;
+        p->equipment[11] = o;
+      }
       break;
   }
   return 1;
