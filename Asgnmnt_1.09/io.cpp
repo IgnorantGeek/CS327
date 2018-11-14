@@ -787,6 +787,8 @@ static void io_list_monsters_display(dungeon *d,
   mvprintw(4, 9, " %-60s ", s);
   mvprintw(5, 9, " %-60s ", "");
 
+  // This is the part that is actually printing monster info, 
+  // reference this for object listing
   for (i = 0; i < count; i++)
   {
     snprintf(tmp, 41, "%3s%s (%c): ",
@@ -872,9 +874,38 @@ void io_list_equipment(dungeon *d)
    * for each inventory slot, list the letter associated with it, followed by
    * object type, followed by info, if an object is present. Leave blank if no
    * object (maybe put null idk) */
-  int i;
-  char (*s)[60]; //What exactly does this store? Confused on the data type
+  //int i;
+  char (*s)[60]; //pointer to array of 60 char
+  s = (char (*)[60]) malloc((14) * sizeof(*s)); //not sure what this is doing
+  
+  // top
   mvprintw(3,9, " %-60s ", "");
+  snprintf(s[0], 60, "Equipment Inventory: ");
+  mvprintw(4, 9, " %-60s ", s);
+  mvprintw(5, 9, " %-60s ", "");
+
+  // item section
+  // need to update this section to print object info, if it exists
+  mvprintw(6, 10, " %-60s ", "(a) WEAPON: ");
+  mvprintw(7, 10, " %-60s ", "(b) OFFHAND: ");
+  mvprintw(8, 10, " %-60s ", "(c) RANGED: ");
+  mvprintw(9, 10, " %-60s ", "(d) ARMOR: ");
+  mvprintw(10, 10, " %-60s ", "(e) HELMET: ");
+  mvprintw(11, 10, " %-60s ", "(f) CLOAK: ");
+  mvprintw(12, 10, " %-60s ", "(g) GLOVES: ");
+  mvprintw(13, 10, " %-60s ", "(h) BOOTS: ");
+  mvprintw(14, 10, " %-60s ", "(i) AMULET: ");
+  mvprintw(15, 10, " %-60s ", "(j) LIGHT: ");
+  mvprintw(16, 10, " %-60s ", "(k) RING 1: ");
+  mvprintw(17, 10, " %-60s ", "(l) RING 2: ");
+
+  // bottom
+  mvprintw(18, 9, " %-60s ", "");
+  mvprintw(19, 9, " %-60s ", "Hit escape to continue.");
+  while (getch() != 27)
+    ;
+  free(s);
+  io_display(d);
 }
 
 void io_list_carry(dungeon *d)
@@ -899,10 +930,13 @@ void io_handle_input(dungeon *d)
       tv.tv_sec = 0;
       tv.tv_usec = 125000; /* An eigth of a second */
 
-      if (fog_off) {
+      if (fog_off) 
+      {
         /* Out-of-bounds cursor will not be rendered. */
         io_redisplay_non_terrain(d, tmp);
-      } else {
+      } 
+      else 
+      {
         io_redisplay_visible_monsters(d);
       }
     } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
