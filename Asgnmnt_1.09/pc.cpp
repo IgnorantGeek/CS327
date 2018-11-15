@@ -414,6 +414,28 @@ int32_t takeoff_object(pc *p, int equipslot)
   return 1;
 }
 
+//WORKS, DOES NOT RETAIN ORDER OF CARRY, COULD BE ANNOYING
+void refactor_carry(pc *p)
+{
+  // move all the null pointers to the end of the array
+  int i, j;
+  for (i = 9; i >= 0; i--)
+  {
+    if (p->carry[i] != nullptr)
+    {
+      for (j = 0; j < i; j++)
+      {
+        if (p->carry[j] == nullptr)
+        {
+          p->carry[j] = p->carry[i];
+          p->carry[i] = nullptr;
+          break;
+        }
+      }
+    }
+  }
+}
+
 void pickup_object(dungeon *d, int slot)
 {
   // just need to move the object at the current PC location to the PC inventory
@@ -440,4 +462,12 @@ void pickup_object(dungeon *d, int slot)
 void drop_object(dungeon *d, int slot)
 {
   // move object from carry to floor
+  pair_t currlocation;
+  currlocation[dim_y] = d->PC->position[dim_y];
+  currlocation[dim_x] = d->PC->position[dim_x];
+  object *obj = d->PC->carry[slot];
+  objpair(currlocation) = obj;
+  d->PC->carry[slot] = nullptr;
+  d->PC->numcarry--;
+  refactor_carry(d->PC);
 }

@@ -867,6 +867,12 @@ static void io_list_monsters(dungeon *d)
   io_display(d);
 }
 
+void io_pc_drop(dungeon *d)
+{
+  // io function for dropping an object. Need to prompt player for which item to drop
+  drop_object(d, 0);
+}
+
 void io_pc_pickup(dungeon *d)
 {
   if (objpair(d->PC->position) == NULL)
@@ -1128,6 +1134,7 @@ void io_handle_input(dungeon *d)
 			break;
 		case 'd':
 			//drop an item, move from carry to floor
+      io_pc_drop(d);
 			break;
 		case 'x':
 			//delete an item from the game
