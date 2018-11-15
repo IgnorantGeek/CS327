@@ -987,6 +987,45 @@ void io_expunge_object(dungeon *d)
   io_display(d);
 }
 
+void io_pc_inspect(dungeon *d)
+{
+  // Honestly no idea what is going on in this one. Just dont use me
+  switch (getch())
+  {
+    case '0':
+      break;
+    case '1':
+      break;
+    case '2':
+      break;
+    case '3':
+      break;
+    case '4':
+      break;
+    case '5':
+      break;
+    case '6':
+      break;
+    case '7':
+      break;
+    case '8':
+      break;
+    case '9':
+      break;
+    default:
+      io_queue_message("Invalid slot entered, returning to game.");
+  };
+  char (*s)[60];
+  s = (char (*)[60]) malloc((14) * sizeof(*s));
+  mvprintw(3,9, " %-60s ", "");
+  snprintf(s[0], 60, "YAY!!");
+  mvprintw(4, 9, " %-60s ", s);
+  mvprintw(5, 9, " %-60s ", "");
+
+  free(s);
+  //io_display(d);
+}
+
 void io_list_equipment(dungeon *d)
 {
   //int i;
@@ -1235,15 +1274,8 @@ void io_handle_input(dungeon *d)
       fail_code = 1;
 			break;
 		case 'I':
-			//inspect an item, prompt to put it in carry
-      if (objpair(d->PC->position) != NULL)
-      {
-        //do the thing
-      }
-      else
-      {
-        io_queue_message("There is nothing here to look at...");
-      }
+			//io_pc_inspect(d);
+      fail_code = 1;
 			break;
 		case 'L':
 			//look at a monster, enter targeting sytem like in teleport and display monster info
