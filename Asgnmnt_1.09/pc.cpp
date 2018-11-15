@@ -56,6 +56,7 @@ void config_pc(dungeon *d)
     if (i < 10)
     d->PC->carry[i] = nullptr;
   }
+  d->PC->numcarry = 0;
   dijkstra(d);
   dijkstra_tunnel(d);
 }
@@ -407,7 +408,7 @@ int32_t wear_object(pc *p, int carryslot)
   return 1;
 }
 
-//adds object to carry, returns 0 if succesful
+// adds object to carry, returns 0 if succesful
 int32_t takeoff_object(pc *p, int equipslot)
 {
   return 1;
@@ -418,4 +419,25 @@ void pickup_object(dungeon *d, int slot)
   // just need to move the object at the current PC location to the PC inventory
   // remove object from dungeon object map
   // if slot is -1 append the object to the end of carry
+  pair_t currlocation;
+  currlocation[dim_y] = d->PC->position[dim_y];
+  currlocation[dim_x] = d->PC->position[dim_x];
+  object *obj = objpair(currlocation);
+  objpair(currlocation) = nullptr; // remove object from dungeon map
+  if (slot == -1)
+  {
+    // add obj to end of d->PC->carry
+    d->PC->carry[d->PC->numcarry] = obj;
+  }
+  else 
+  {
+    d->PC->carry[slot] = obj;
+  }
+  // free(obj);
+  d->PC->numcarry++;
+}
+
+void drop_object(dungeon *d, int slot)
+{
+  // move object from carry to floor
 }

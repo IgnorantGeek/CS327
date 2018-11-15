@@ -61,3 +61,4 @@ is.
 (11/14) Need to finish printing inventories, need to rewrite descriptions to
     limit object name length to max number of chars
 (11/14) Need to work on picking up items to test inventory printing, implementing now
+(11/14) Implemented pickup method, not complete but it works

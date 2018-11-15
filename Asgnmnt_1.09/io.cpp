@@ -871,16 +871,30 @@ void io_pc_pickup(dungeon *d)
 {
   if (objpair(d->PC->position) == NULL)
   {
-    io_queue_message("There is no object to pickup!");
+    io_queue_message("There is nothing to pickup!");
   }
-  // for this to work, carry must shift all elements left when open spaces 
-  // are present. If that is what I want to do then leave this alone
-  else if (d->PC->carry[10] != NULL)
+  // This isn't how I want this to work (I want it to prompt the player which carry to drop)
+  // how it does work: if you have 10 items in carry and try to pickup another
+  // you will be told that it is unable and you need to drop one first.
+  // I could do this by calling io_list_carry and having it return whichever slot got selected
+  // not sure if that is right tho...
+  else if (d->PC->numcarry >= 10)
   {
-    int slotnum = getch();
+    io_queue_message("Carry is full. You must, first, drop an item to pickup another.");
+    //int slotnum = 10;
+    // checks that the entered number is a valid carry slot
+    /**while (!slotnum < 10)
+    {
+      //slotnum = getch();
+      if (!slotnum < 10)
+      {
+        io_queue_message("That is not a valid carry slot. Enter a number 0-9.");
+      }
+    }
     pickup_object(d, slotnum);
+    */
   }
-  else pickup_object(d, -1);
+  else pickup_object(d, -1); // this is working
 }
 
 void io_list_equipment(dungeon *d)

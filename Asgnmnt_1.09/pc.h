@@ -21,6 +21,7 @@ class pc : public character
    * probaby just add to carry or prompt a "swap" command I suppose
 	 */
 	object *carry[10]; //carry slots, array should be 10 long
+	int numcarry;
 	char eslots[13] = "abcdefghijkl"; //'marker' array for equipment slots
 	//get the correct object in equipment by matching players input letter to the array position from this array
 };
@@ -41,4 +42,5 @@ int32_t wear_object(pc *p, int carryslot); //returns 0 if wearobject successful,
 int32_t takeoff_object(pc *p, int equipslot); //returns 0 if takeoff successful, 1 otherwise
 // do these ^ guys need to return anything? Can the PC fail to wear an item?
 void pickup_object(dungeon *d, int slot);
+void drop_object(dungeon *d, int slot);
 #endif
