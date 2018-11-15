@@ -44,10 +44,18 @@ void config_pc(dungeon *d)
   d->PC->kills[kill_direct] = d->PC->kills[kill_avenged] = 0;
   d->PC->color.push_back(COLOR_WHITE);
   d->PC->damage = &pc_dice;
-  d->PC->name = "Avatar Krysta"; //PC name field
+  d->PC->name = "Avatar Krysta"; // PC name field
 	d->PC->hp = 100;
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
+  // initializes object pointer arrays to null
+  int i;
+  for (i = 0; i < 12; i++)
+  {
+    d->PC->equipment[i] = nullptr;
+    if (i < 10)
+    d->PC->carry[i] = nullptr;
+  }
   dijkstra(d);
   dijkstra_tunnel(d);
 }
@@ -403,4 +411,11 @@ int32_t wear_object(pc *p, int carryslot)
 int32_t takeoff_object(pc *p, int equipslot)
 {
   return 1;
+}
+
+void pickup_object(dungeon *d, int slot)
+{
+  // just need to move the object at the current PC location to the PC inventory
+  // remove object from dungeon object map
+  // if slot is -1 append the object to the end of carry
 }

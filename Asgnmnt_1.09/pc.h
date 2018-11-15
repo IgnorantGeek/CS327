@@ -37,6 +37,8 @@ void pc_init_known_terrain(pc *p);
 void pc_observe_terrain(pc *p, dungeon *d);
 int32_t is_illuminated(pc *p, int16_t y, int16_t x);
 void pc_reset_visibility(pc *p);
-int32_t wear_object(pc *p, int carryslot); //returns 0 if pickup successful, 1 otherwise
-int32_t takeoff_object(pc *p, int equipslot); //returns 0 if pickup successful, 1 otherwise
+int32_t wear_object(pc *p, int carryslot); //returns 0 if wearobject successful, 1 otherwise
+int32_t takeoff_object(pc *p, int equipslot); //returns 0 if takeoff successful, 1 otherwise
+// do these ^ guys need to return anything? Can the PC fail to wear an item?
+void pickup_object(dungeon *d, int slot);
 #endif

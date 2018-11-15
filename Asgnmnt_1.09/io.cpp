@@ -867,6 +867,22 @@ static void io_list_monsters(dungeon *d)
   io_display(d);
 }
 
+void io_pc_pickup(dungeon *d)
+{
+  if (objpair(d->PC->position) == NULL)
+  {
+    io_queue_message("There is no object to pickup!");
+  }
+  // for this to work, carry must shift all elements left when open spaces 
+  // are present. If that is what I want to do then leave this alone
+  else if (d->PC->carry[10] != NULL)
+  {
+    int slotnum = getch();
+    pickup_object(d, slotnum);
+  }
+  else pickup_object(d, -1);
+}
+
 void io_list_equipment(dungeon *d)
 {
   /* Here is how I am going to do this:
@@ -886,18 +902,29 @@ void io_list_equipment(dungeon *d)
 
   // item section
   // need to update this section to print object info, if it exists
-  mvprintw(6, 10, " %-60s ", "(a) WEAPON: ");
-  mvprintw(7, 10, " %-60s ", "(b) OFFHAND: ");
-  mvprintw(8, 10, " %-60s ", "(c) RANGED: ");
-  mvprintw(9, 10, " %-60s ", "(d) ARMOR: ");
-  mvprintw(10, 10, " %-60s ", "(e) HELMET: ");
-  mvprintw(11, 10, " %-60s ", "(f) CLOAK: ");
-  mvprintw(12, 10, " %-60s ", "(g) GLOVES: ");
-  mvprintw(13, 10, " %-60s ", "(h) BOOTS: ");
-  mvprintw(14, 10, " %-60s ", "(i) AMULET: ");
-  mvprintw(15, 10, " %-60s ", "(j) LIGHT: ");
-  mvprintw(16, 10, " %-60s ", "(k) RING 1: ");
-  mvprintw(17, 10, " %-60s ", "(l) RING 2: ");
+    // need to add checks, if PC->equipment[i] is null, print this
+    mvprintw(6, 10, " %-60s ", "(a)  WEAPON: ");
+    mvprintw(7, 10, " %-60s ", "(b) OFFHAND: ");
+    mvprintw(8, 10, " %-60s ", "(c)  RANGED: ");
+    mvprintw(9, 10, " %-60s ", "(d)   ARMOR: ");
+    mvprintw(10, 10, " %-60s ", "(e)  HELMET: ");
+    mvprintw(11, 10, " %-60s ", "(f)   CLOAK: ");
+    mvprintw(12, 10, " %-60s ", "(g)  GLOVES: ");
+    mvprintw(13, 10, " %-60s ", "(h)   BOOTS: ");
+    mvprintw(14, 10, " %-60s ", "(i)  AMULET: ");
+    mvprintw(15, 10, " %-60s ", "(j)   LIGHT: ");
+    mvprintw(16, 10, " %-60s ", "(k)  RING 1: ");
+    mvprintw(17, 10, " %-60s ", "(l)  RING 2: ");
+  /** 
+  int i;
+  for (i = 0; i < 12; i++)
+  {
+    if (d->PC->equipment[i] == NULL)
+    {
+      mvprintw(6+i, 10, "%-60s ", "Yeah boi");
+    }
+  }
+  */ 
 
   // bottom
   mvprintw(18, 9, " %-60s ", "");
@@ -1088,6 +1115,10 @@ void io_handle_input(dungeon *d)
 		case 'L':
 			//look at a monster, enter targeting sytem like in teleport and display monster info
 			break;
+    case ',':
+      // try to pickup an item
+      io_pc_pickup(d);
+      break;
     default:
       /* Also not in the spec.  It's not always easy to figure out what *
        * key code corresponds with a given keystroke.  Print out any    *
