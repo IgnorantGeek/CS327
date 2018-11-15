@@ -62,3 +62,4 @@ is.
     limit object name length to max number of chars
 (11/14) Need to work on picking up items to test inventory printing, implementing now
 (11/14) Implemented pickup method, not complete but it works
+(11/14) Drop and pickup now work fully

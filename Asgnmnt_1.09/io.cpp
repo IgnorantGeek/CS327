@@ -867,10 +867,48 @@ static void io_list_monsters(dungeon *d)
   io_display(d);
 }
 
+//SHOULD BE DONE
 void io_pc_drop(dungeon *d)
 {
   // io function for dropping an object. Need to prompt player for which item to drop
-  drop_object(d, 0);
+  io_queue_message("Enter the slot to drop.");
+  io_display(d);
+  switch (getch())
+  {
+    case '0':
+      drop_object(d, 0);
+      break;
+    case '1':
+      drop_object(d, 1);
+      break;
+    case '2':
+      drop_object(d, 2);
+      break;
+    case '3':
+      drop_object(d, 3);
+      break;
+    case '4':
+      drop_object(d, 4);
+      break;
+    case '5':
+      drop_object(d, 5);
+      break;
+    case '6':
+      drop_object(d, 6);
+      break;
+    case '7':
+      drop_object(d, 7);
+      break;
+    case '8':
+      drop_object(d, 8);
+      break;
+    case '9':
+      drop_object(d, 9);
+      break;
+    default:
+      io_queue_message("Invalid slot entered, cancelling drop.");
+      break;
+  };
 }
 
 void io_pc_pickup(dungeon *d)
@@ -887,7 +925,7 @@ void io_pc_pickup(dungeon *d)
   // not sure if that is right tho...
   else if (d->PC->numcarry >= 10)
   {
-    io_queue_message("Carry is full. You must, first, drop an item to pickup another.");
+    io_queue_message("Your carry inventory is full. Drop an item to pickup another.");
     //int slotnum = 10;
     // checks that the entered number is a valid carry slot
     /**while (!slotnum < 10)
@@ -956,7 +994,7 @@ void io_list_carry(dungeon *d)
   //list all objects in PC's carry array
   int i;
   char (*s)[60]; //pointer to array of 60 char
-  s = (char (*)[60]) malloc((10) * sizeof(*s)); //not sure what this does
+  s = (char (*)[60]) malloc((10) * sizeof(*s));
   // top
   mvprintw(3,9, " %-60s ", "");
   snprintf(s[0], 60, "Carry Inventory: ");

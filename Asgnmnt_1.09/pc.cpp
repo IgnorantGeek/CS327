@@ -414,7 +414,7 @@ int32_t takeoff_object(pc *p, int equipslot)
   return 1;
 }
 
-//WORKS, DOES NOT RETAIN ORDER OF CARRY, COULD BE ANNOYING
+//TODO fix so the order is the same
 void refactor_carry(pc *p)
 {
   // move all the null pointers to the end of the array
