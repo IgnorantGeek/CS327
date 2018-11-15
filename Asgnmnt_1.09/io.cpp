@@ -940,6 +940,50 @@ void io_pc_pickup(dungeon *d)
     */
   }
   else pickup_object(d, -1); // this is working
+  io_display(d);
+}
+
+void io_expunge_object(dungeon *d)
+{
+  io_queue_message("Enter inventory slot of item to delete from game.");
+  io_display(d);
+  switch (getch())
+  {
+    case '0':
+      expunge_object(d, 0);
+      break;
+    case '1':
+      expunge_object(d, 1);
+      break;
+    case '2':
+      expunge_object(d, 2);
+      break;
+    case '3':
+      expunge_object(d, 3);
+      break;
+    case '4':
+      expunge_object(d, 4);
+      break;
+    case '5':
+      expunge_object(d, 5);
+      break;
+    case '6':
+      expunge_object(d, 6);
+      break;
+    case '7':
+      expunge_object(d, 7);
+      break;
+    case '8':
+      expunge_object(d, 8);
+      break;
+    case '9':
+      expunge_object(d, 9);
+      break;
+    default:
+      io_queue_message("Invalid slot entered, cancelling deletion");
+      break;
+  };
+  io_display(d);
 }
 
 void io_list_equipment(dungeon *d)
@@ -1051,7 +1095,8 @@ void io_handle_input(dungeon *d)
       }
     } while (!select(STDIN_FILENO + 1, &readfs, NULL, NULL, &tv));
     fog_off = 0;
-    switch (key = getch()) {
+    switch (key = getch()) 
+    {
     case '7':
     case 'y':
     case KEY_HOME:
@@ -1173,9 +1218,12 @@ void io_handle_input(dungeon *d)
 		case 'd':
 			//drop an item, move from carry to floor
       io_pc_drop(d);
+      fail_code = 1;
 			break;
 		case 'x':
 			//delete an item from the game
+      io_expunge_object(d);
+      fail_code = 1;
 			break;
 		case 'i':
       io_list_carry(d);
@@ -1193,7 +1241,7 @@ void io_handle_input(dungeon *d)
       }
       else
       {
-        io_queue_message("There is nothing here to pick up...");
+        io_queue_message("There is nothing here to look at...");
       }
 			break;
 		case 'L':
@@ -1202,6 +1250,7 @@ void io_handle_input(dungeon *d)
     case ',':
       // try to pickup an item
       io_pc_pickup(d);
+      fail_code = 1;
       break;
     default:
       /* Also not in the spec.  It's not always easy to figure out what *

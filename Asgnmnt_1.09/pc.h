@@ -43,4 +43,5 @@ int32_t takeoff_object(pc *p, int equipslot); //returns 0 if takeoff successful,
 // do these ^ guys need to return anything? Can the PC fail to wear an item?
 void pickup_object(dungeon *d, int slot);
 void drop_object(dungeon *d, int slot);
+void expunge_object(dungeon *d, int slot);
 #endif

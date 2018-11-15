@@ -471,3 +471,11 @@ void drop_object(dungeon *d, int slot)
   d->PC->numcarry--;
   refactor_carry(d->PC);
 }
+
+void expunge_object(dungeon *d, int slot)
+{
+  delete d->PC->carry[slot];
+  d->PC->carry[slot] = nullptr;
+  refactor_carry(d->PC);
+  d->PC->numcarry--;
+}
