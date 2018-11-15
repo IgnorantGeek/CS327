@@ -909,6 +909,7 @@ void io_pc_drop(dungeon *d)
       io_queue_message("Invalid slot entered, cancelling drop.");
       break;
   };
+  io_display(d);
 }
 
 void io_pc_pickup(dungeon *d)
