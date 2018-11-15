@@ -873,6 +873,7 @@ void io_pc_pickup(dungeon *d)
   {
     io_queue_message("There is nothing to pickup!");
   }
+  //TODO
   // This isn't how I want this to work (I want it to prompt the player which carry to drop)
   // how it does work: if you have 10 items in carry and try to pickup another
   // you will be told that it is unable and you need to drop one first.
@@ -899,11 +900,6 @@ void io_pc_pickup(dungeon *d)
 
 void io_list_equipment(dungeon *d)
 {
-  /* Here is how I am going to do this:
-   * move the cursor to the same spot as in io_list_monsters_display
-   * for each inventory slot, list the letter associated with it, followed by
-   * object type, followed by info, if an object is present. Leave blank if no
-   * object (maybe put null idk) */
   //int i;
   char (*s)[60]; //pointer to array of 60 char
   s = (char (*)[60]) malloc((14) * sizeof(*s)); //not sure what this is doing
@@ -952,6 +948,35 @@ void io_list_equipment(dungeon *d)
 void io_list_carry(dungeon *d)
 {
   //list all objects in PC's carry array
+  int i;
+  char (*s)[60]; //pointer to array of 60 char
+  s = (char (*)[60]) malloc((10) * sizeof(*s)); //not sure what this does
+  // top
+  mvprintw(3,9, " %-60s ", "");
+  snprintf(s[0], 60, "Carry Inventory: ");
+  mvprintw(4, 9, " %-60s ", s);
+  mvprintw(5, 9, " %-60s ", "");
+
+  // middle 
+  for (i = 0; i < 10; i++)
+  {
+    //print info for each item
+    if (d->PC->carry[i] != nullptr) 
+    {
+      snprintf(s[i], 60, "(%d): %s", i, d->PC->carry[i]->get_name());
+      //TODO add more print info, only prints name rn
+    }
+    else snprintf(s[i], 60, "(%d): ", i);
+    mvprintw(i+6, 9, " %-60s ", s[i]);
+  }
+
+  //bottom
+  mvprintw(i+6, 9, " %-60s ", "");
+  mvprintw(i+7, 9, " %-60s ", "Hit escape to continue.");
+  while (getch() != 27)
+    ;
+  free(s);
+  io_display(d);
 }
 
 void io_handle_input(dungeon *d)
