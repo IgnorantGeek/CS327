@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-
+#include <ncurses.h>
 
 /*
 What will be the best practice for this guy? Maybe have a text reader kinda like we did in rlg for the monsters
@@ -18,6 +18,6 @@ int main(int argc, char *argv[])
 {
     //the main method
     //need separate methods to scan. main might just want to go in another file...
-    printf("We did something!"); 
+    printf("We did something!");
     return 0;
 }
