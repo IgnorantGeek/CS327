@@ -1,8 +1,4 @@
-This iteration adds funcitonality for PC inventory and object pickup. 
-I have changed the description code to only allow object names with a of max
-number of characters, makes printing object names easier. Max length of object
-name is x. Pickup items by pressing ',' (or something).
-
-Refactor_carry jumbles arround the order of carry, not sure if that is an issue yet
-
-Speed boosts? How do we do that...
+This iteration adds funcitonality for PC inventory and object pickup. Pickup is not automatic,
+the PC can trigger an item pickup by pressing ','. PC carry inventory works, but I could 
+not get the equipment inventory to print so I have not implemented that or wearing/taking off items.
+Did not have time to do damage system updates. This one sucked.
