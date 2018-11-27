@@ -14,11 +14,19 @@ typedef struct state
 typedef struct item 
 {
     char *name;
-    item *subitems;
-    int numsub;
     int numstates;
     state_t *states;
 } item_t;
+
+typedef struct animate
+{
+    //something you can interact with but not pickup
+} animate_t;
+
+typedef struct inanimate
+{
+    //something you can look at but not move or touch
+} inanimate_t;
 
 typedef struct player
 {
@@ -31,6 +39,16 @@ typedef struct container
     item_t *inventory;
     char *Description;
 } container_t;
+
+typedef struct wall
+{
+    //have things on them like windows or posters
+} wall_t;
+
+typedef struct room
+{
+
+} room_t;
 
 typedef struct game 
 {

@@ -1,24 +1,24 @@
-CXX = g++
+CC = gcc
 ECHO = echo
 RM = rm -f
 
-CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
+CFLAGS = -Wall -Werror
 LDFLAGS = 
 
-BIN = main
-OBJS = main.o EscapeTheRoom.o
+BIN = RunEscape
+OBJS = RunEscape.o EscapeTheRoom.o RoomParser.o
 
 all: $(BIN) etags
 
 (BIN): $(OBJS)
 	@$(ECHO) Linking $@
-	@$(CXX) $^ -o $@ $(LDFLAGS)
+	@$(CC) $^ -o $@ $(LDFLAGS)
 
 -include $(OBJS:.o=.d)
 
-%.o: %.cpp
+%.o: %.c
 	@$(ECHO) Compiling $<
-	@$(CXX) $(CXXFLAGS) -MMD -MF $*.d -c $<
+	@$(CC) $(CFLAGS) -MMD -MF $*.d -c $<
 
 .PHONY: all clean clobber etags
 
