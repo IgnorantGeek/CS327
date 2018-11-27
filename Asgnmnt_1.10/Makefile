@@ -1,17 +1,16 @@
-CC = gcc
 CXX = g++
 ECHO = echo
 RM = rm -f
 
-CXXFLAGS = -Wall -Werror
-LDFLAGS = -lncurses
+CXXFLAGS = -Wall -Werror -ggdb3 -funroll-loops -std=c++11
+LDFLAGS = 
 
-BIN = PuzzleGame
-OBJS = PuzzleGame.o Puzzle.o PuzzleReader.o PuzzleRunner.o
+BIN = main
+OBJS = main.o EscapeTheRoom.o
 
 all: $(BIN) etags
 
-$(BIN): $(OBJS)
+(BIN): $(OBJS)
 	@$(ECHO) Linking $@
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 

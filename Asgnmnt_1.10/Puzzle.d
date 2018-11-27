@@ -1,1 +1,0 @@
-Puzzle.o: Puzzle.cpp
