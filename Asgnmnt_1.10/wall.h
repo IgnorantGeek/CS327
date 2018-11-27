@@ -13,7 +13,7 @@ class wall : public object
         object obj5;
     public:
         wall() ;
-        wall(object *obj1, object *obj2, object *obj3, object *obj4, object *obj5); 
+        wall(object *obj1, object *obj2, object *obj3, object *obj4, object *obj5);
 };
 
 #endif
