@@ -8,6 +8,7 @@ class object
 {
     public:
         std::string &name;
+        std::string &desc; //text to display when interacting with item?? (think about what you would need to display for any given object)
         //what else can I generalize and put here?
 };
 

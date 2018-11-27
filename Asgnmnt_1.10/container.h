@@ -6,7 +6,8 @@
 class container : public object
 {
     public:
-
+        item *items;
+        container();
 };
 
 #endif

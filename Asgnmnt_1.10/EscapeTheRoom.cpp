@@ -6,41 +6,41 @@
 
 //devide up functions into the appropriate header files
 
-int pickupItem(item_t *i)
+int pickupItem(item *i)
 {
     //object o = new object();
     return 0;
 }
 
-int useItem(item_t *i)
+int useItem(item *i)
 {
     return 0;
 }
 
 //might not be needed. Need to look at room creation
-item_t newItem()
+item newItem()
 {
     //initialize a new item.
-    item_t i;
+    item i;
     return i;
 }
 
 //might not be needed
-container_t openContainer(container_t *c)
+container openContainer(container *c)
 {
     //player gets prompted with what is in the container
-    container_t d;
+    container d;
     return d;
 }
 
-container_t newContainer(char *name, item_t *i)
+container newContainer(char *name, item *i)
 {
     //initialize a container with the given items inside.
-    container_t c;
+    container c;    
     return c;
 }
 
-int putItem(container_t *c, item_t *i)
+int putItem(container *c, item *i)
 {
     //put the item in the container
     return 0;

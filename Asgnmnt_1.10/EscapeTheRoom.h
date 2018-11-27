@@ -2,6 +2,7 @@
  #define ESCAPETHEROOM_H
 
 #include "item.h"
+#include "container.h"
 
 //needs to be some stort of way to generalize what is stored in the item class
 //some things may need other items to work, some may work only in a certain way.
@@ -25,7 +26,8 @@ typedef struct wall
     object obj2;
     object obj3;
     object obj4;
-    //walls can hold 4 objects
+    object obj5;
+    //walls can hold 5 objects
 } wall_t;
 
 typedef struct room

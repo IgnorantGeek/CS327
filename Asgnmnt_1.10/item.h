@@ -14,6 +14,7 @@ class item : public object
         //item stuff
         state_t *states;
         int numStates;
+        item() ;
 };
 
 #endif
