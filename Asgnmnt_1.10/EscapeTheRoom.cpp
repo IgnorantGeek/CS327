@@ -57,7 +57,7 @@ void readInput()
     //reads the input file and constructs rooms
 }
 
-void lookWall(wall_t *w)
+void lookWall(wall *w)
 {
 
 }

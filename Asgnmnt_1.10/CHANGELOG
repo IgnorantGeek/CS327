@@ -2,3 +2,4 @@
 (11/24) I want to make a text based puzzle game. Begin working on that
 (11/25) going to make the game a general puzzle API that will read a text based language and create a game
 (11/26) Just going to make an escape the room type game. API is too complex
+(11/26) Game is too easy, going to try to make a game framework as a compromise

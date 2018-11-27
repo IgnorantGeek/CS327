@@ -3,6 +3,7 @@
 
 #include "item.h"
 #include "container.h"
+#include "wall.h"
 
 //needs to be some stort of way to generalize what is stored in the item class
 //some things may need other items to work, some may work only in a certain way.
@@ -17,31 +18,21 @@ class player
         int roomNum;
 };
 
-typedef struct wall
-{
-    //have things on them like windows or posters
-    //wall can have animate object, inanimate, or container/items
-    //rooms have walls, walls have objects. Need to classify objects and do inheritance
-    object obj1;
-    object obj2;
-    object obj3;
-    object obj4;
-    object obj5;
-    //walls can hold 5 objects
-} wall_t;
-
+//room environment
 typedef struct room
 {
-    wall_t north;
-    wall_t south;
-    wall_t east;
-    wall_t west;
-    wall_t ceiling;
-    wall_t floor;
+    wall north;
+    wall south;
+    wall east;
+    wall west;
+    wall ceiling;
+    wall fl;
 } room_t;
 
+//game environment
 typedef struct game 
 {
+    //player, room content, stats, scores, stuff like that 
     room_t *rooms;
     player pc;
 } game_t;
