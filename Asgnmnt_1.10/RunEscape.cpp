@@ -11,7 +11,5 @@ int main(int argc, char *args[])
     printf("New Game. In a dark room or whatever and there is a closet \n");
     printf("This will all get ported to ncurses.\n");
 
-    game_t escape;
-
     return 0;
 }
