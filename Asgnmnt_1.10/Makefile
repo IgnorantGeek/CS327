@@ -1,8 +1,8 @@
-CC = gcc
+CXX = g++
 ECHO = echo
 RM = rm -f
 
-CFLAGS = -Wall -Werror
+CXXFLAGS = -Wall -Werror -std=c++11
 LDFLAGS = 
 
 BIN = RunEscape
@@ -12,13 +12,13 @@ all: $(BIN) etags
 
 (BIN): $(OBJS)
 	@$(ECHO) Linking $@
-	@$(CC) $^ -o $@ $(LDFLAGS)
+	@$(CXX) $^ -o $@ $(LDFLAGS)
 
 -include $(OBJS:.o=.d)
 
 %.o: %.c
 	@$(ECHO) Compiling $<
-	@$(CC) $(CFLAGS) -MMD -MF $*.d -c $<
+	@$(CXX) $(CXXFLAGS) -MMD -MF $*.d -c $<
 
 .PHONY: all clean clobber etags
 
