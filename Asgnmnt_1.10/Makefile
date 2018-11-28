@@ -6,11 +6,11 @@ CXXFLAGS = -Wall -Werror -std=c++11
 LDFLAGS =
 
 BIN = RunEscape
-OBJS = RunEscape.o EscapeTheRoom.o RoomParser.o
+OBJS = RunEscape.o EscapeTheRoom.o RoomParser.o item.o container.o
 
 all: $(BIN) etags
 
-(BIN): $(OBJS)
+$(BIN): $(OBJS)
 	@$(ECHO) Linking $@
 	@$(CXX) $^ -o $@ $(LDFLAGS)
 

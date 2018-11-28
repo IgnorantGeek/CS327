@@ -17,29 +17,6 @@ int useItem(item *i)
     return 0;
 }
 
-//might not be needed. Need to look at room creation
-item newItem()
-{
-    //initialize a new item.
-    item i;
-    return i;
-}
-
-//might not be needed
-container openContainer(container *c)
-{
-    //player gets prompted with what is in the container
-    container d;
-    return d;
-}
-
-container newContainer(char *name, item *i)
-{
-    //initialize a container with the given items inside.
-    container c;    
-    return c;
-}
-
 int putItem(container *c, item *i)
 {
     //put the item in the container
