@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
+#include "action.h"
 
 //base class for items, animates, inanimates, and containers
 class object
 {
-    private:
+    protected:
         char *name;
         char *desc; //text to display when interacting with item?? (think about what you would need to display for any given object)
         //what else can I generalize and put here?

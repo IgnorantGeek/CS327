@@ -1,8 +1,6 @@
 #ifndef ESCAPETHEROOM_H
  #define ESCAPETHEROOM_H
 
-#include "item.h"
-#include "container.h"
 #include "wall.h"
 
 //needs to be some stort of way to generalize what is stored in the item class
@@ -36,5 +34,7 @@ typedef struct game
     room_t *rooms;
     player pc;
 } game_t;
+
+int initGame();
 
 #endif

@@ -1,19 +1,13 @@
 #ifndef WALL_H
  #define WALL_H
 
-#include "object.h"
+#include "container.h"
 
-class wall : public object
+class wall : public container
 {
-    private:
-        object obj1;
-        object obj2;
-        object obj3;
-        object obj4;
-        object obj5;
     public:
-        wall() ;
-        wall(object *obj1, object *obj2, object *obj3, object *obj4, object *obj5);
+        wall();
+        ~wall();
 };
 
 #endif

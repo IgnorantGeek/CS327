@@ -1,5 +1,5 @@
-#ifndef ACTIONS_H
- #define ACTIONS_H
+#ifndef ACTION_H
+ #define ACTION_H
  
 /* Holder class for actions
 * Actions are inputs by the player. All actions (except for quit) are associated with an object. Every object (excluding inanimates) will have 
@@ -9,7 +9,7 @@
 class action
 {
     public:
-
+    
     private:
 };
 
