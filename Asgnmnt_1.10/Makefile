@@ -3,7 +3,7 @@ ECHO = echo
 RM = rm -f
 
 CXXFLAGS = -Wall -Werror -std=c++11
-LDFLAGS = 
+LDFLAGS =
 
 BIN = RunEscape
 OBJS = RunEscape.o EscapeTheRoom.o RoomParser.o
@@ -16,7 +16,7 @@ all: $(BIN) etags
 
 -include $(OBJS:.o=.d)
 
-%.o: %.c
+%.o: %.cpp
 	@$(ECHO) Compiling $<
 	@$(CXX) $(CXXFLAGS) -MMD -MF $*.d -c $<
 
@@ -32,4 +32,4 @@ clobber: clean
 
 etags:
 	@$(ECHO) Updating TAGS
-	@etags *.c *.cpp *.h
+	@etags *.cpp *.h
