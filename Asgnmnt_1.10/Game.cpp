@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "Game.h"
+#include "wall.h"
 
 //devide up functions into the appropriate header files
 

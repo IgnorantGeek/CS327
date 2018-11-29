@@ -6,7 +6,7 @@
 class wall : public container
 {
     public:
-        wall();
+        wall(); //default constructor is spitting out a compile error
         ~wall();
         wall(char *n, char *d){
             name = n;

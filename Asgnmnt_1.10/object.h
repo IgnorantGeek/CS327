@@ -24,6 +24,8 @@ class object
         }
         char * get_name() {return name;}
         char * get_desc() {return desc;}
+        size_t sz_name() {return sizeof(name);}
+        size_t sz_desc() {return sizeof(desc);}
         ~object();
 };
 

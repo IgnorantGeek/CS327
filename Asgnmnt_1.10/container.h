@@ -3,6 +3,9 @@
 
 #include "item.h"
 #include <vector>
+/**Class for objects that can hold by other objects. Cannot be picked up by player
+ * BUG: Should we allow containers to be picked up? What would be the benefit of that?
+ */
 
 class container : public object
 {
@@ -24,6 +27,7 @@ class container : public object
         };
     protected:
         std::vector <object*> contents;
+        std::vector <action*> actions;
         int numobjects;
 };
 

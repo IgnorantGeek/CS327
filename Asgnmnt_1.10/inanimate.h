@@ -2,8 +2,8 @@
  #define INANIMATE_H
 
 #include "object.h"
-#include <iostream>
-
+/**Class for objects that cannot be interacted with and cannot be picked up by the player
+ */
 class inanimate : public object
 {
     protected:

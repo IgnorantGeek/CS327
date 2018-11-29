@@ -2,7 +2,6 @@
  #define ITEM_H
 
 #include "object.h"
-
 #include <vector>
 
 /**Need to figure out this state thing
@@ -28,12 +27,16 @@ class item : public object
             //need to malloc actions
             actions.push_back(a);
         };
-        size_t sz_name() {return sizeof(name);}
         int num_actions() {return actions.size();}
         int new_action(action *a){
             actions.push_back(a);
             return 0;
         }
+        int remove_action(int slot){
+            actions.erase(actions.begin() + slot);
+            return 0;
+        }
+        //TODO: check that this is the proper way to remove stuff.
         int clear_actions(){
             for (action* a : actions)
             {
@@ -42,7 +45,6 @@ class item : public object
             }
             actions.clear();
             return 0;
-            //check that this is the correct way to delete all the actions
         };
 };
 
