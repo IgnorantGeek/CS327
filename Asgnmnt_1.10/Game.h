@@ -1,5 +1,5 @@
-#ifndef ESCAPETHEROOM_H
- #define ESCAPETHEROOM_H
+#ifndef GAME_H
+ #define GAME_H
 
 #include "wall.h"
 
@@ -31,10 +31,13 @@ typedef struct room
 typedef struct game 
 {
     //player, room content, stats, scores, stuff like that 
-    room_t *rooms;
+    std::vector<room_t*> rooms;
     player pc;
+    item *items; //?
 } game_t;
 
-int initGame();
+int initGame(game_t *g);
+int newRoom(game_t *g); //initialize walls
+int deleteGame(game_t *g); //clear everything and free all memory
 
 #endif

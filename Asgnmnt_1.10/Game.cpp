@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "EscapeTheRoom.h"
+#include "Game.h"
 
 //devide up functions into the appropriate header files
 
@@ -41,3 +41,10 @@ void lookWall(wall *w)
 
 //make rooms text files. Parse descriptions of rooms and add that to game. Just like dungeons and stuff. Fuck.
 //hmmmmmmmmmmmmmmmmmmmmm ok
+
+int newRoom(game_t *g)
+{
+    room a;
+    g->rooms.push_back(&a);
+    return 0;
+}
