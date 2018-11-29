@@ -19,15 +19,14 @@ class item : public object
     protected:
         std::vector<action*> actions;
     public:
-        //item stuff
         item();
+        ~item();
         item(char *n, char *d, action *a) //constructor with a name and some state
         {
             name = n;
             desc = d;
             //need to malloc actions
-            actions.push_back(a); //is this the correct way to store an action?
-            
+            actions.push_back(a);
         };
         size_t sz_name() {return sizeof(name);}
         int num_actions() {return actions.size();}
@@ -43,8 +42,10 @@ class item : public object
             }
             actions.clear();
             return 0;
+            //check that this is the correct way to delete all the actions
         };
 };
 
- char * actions2str(item *i); //return item as string
+
+char * actions2str(item *i); //return item as string
 #endif

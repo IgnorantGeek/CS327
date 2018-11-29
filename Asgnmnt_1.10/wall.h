@@ -8,6 +8,11 @@ class wall : public container
     public:
         wall();
         ~wall();
+        wall(char *n, char *d){
+            name = n;
+            desc = d;
+        }
 };
 
+int add_object(wall *w, object *obj);
 #endif

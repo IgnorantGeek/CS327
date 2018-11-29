@@ -10,9 +10,13 @@ class inanimate : public object
         char *message; //contains what is on the poster/picture/etc.
     public:
         inanimate();
-        inanimate(char *m){message = m;} //make sure this is the right way to set the message. 
-        //can we just change what the pointer points to?
+        inanimate(char *n, char *d, char *m){
+            message = m;
+            name = n;
+            desc = d;
+        }
         ~inanimate();
 };
 
+int update_message(inanimate *i, char *m);
 #endif
