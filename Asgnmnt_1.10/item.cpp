@@ -11,3 +11,13 @@ char * actions2str(item *i)
     strcpy(string,i->get_name());
     return string;
 }
+
+item::item()
+{
+    //do stuff
+}
+
+item::~item()
+{
+    //delete stuff
+}
