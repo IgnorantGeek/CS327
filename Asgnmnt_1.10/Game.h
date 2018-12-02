@@ -28,6 +28,8 @@ typedef struct room
 } room_t;
 
 //game environment
+//what data is important to the game? Should we keep a list of all objects in the game?
+//Or should object instances be stored in their own rooms?
 typedef struct game 
 {
     //player, room content, stats, scores, stuff like that 

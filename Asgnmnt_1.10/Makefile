@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -Werror -std=c++11
 LDFLAGS =
 
 BIN = RunEscape
-OBJS = RunEscape.o Game.o RoomParser.o item.o container.o wall.o data.o
+OBJS = RunEscape.o Game.o RoomParser.o item.o container.o wall.o object.o animate.o inanimate.o
 
 all: $(BIN) etags
 

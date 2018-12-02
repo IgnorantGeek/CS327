@@ -14,6 +14,7 @@ class object //: public data
         //what else can I generalize and put here?
     public:
         object();
+        ~object();
         object(char *n, char *d)
         {
             name = (char *) malloc(sizeof(n));
@@ -25,7 +26,6 @@ class object //: public data
         char * get_desc() {return desc;}
         size_t sz_name() {return sizeof(name);}
         size_t sz_desc() {return sizeof(desc);}
-        ~object();
 };
 
 #endif

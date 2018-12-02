@@ -1,12 +1,11 @@
 #include "object.h"
 
-object::object(std::string &name, std::string &desc) :
-    name(name),desc(desc)
+object::object()
 {
-    
+    //default constructor 
 }
 
-const char *get_name()
+object::~object()
 {
-    return name.c_str();
+    //destructor
 }
