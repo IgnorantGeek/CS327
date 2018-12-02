@@ -1,5 +1,8 @@
 #ifndef ACTION_H
  #define ACTION_H
+
+ #include "data/data.h"
+ #include "object.h"
  
 /* Holder class for actions
 * Actions are inputs by the player. All actions (except for quit) are associated with an object. Every object (excluding inanimates) will have 
@@ -10,7 +13,10 @@ class action
 {
     public:
     
-    private:
+    protected:
+        data *data;
+        char *keyword;
+        object *reference;
 };
 
 #endif
