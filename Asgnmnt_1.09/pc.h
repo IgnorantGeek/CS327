@@ -7,23 +7,43 @@
 # include "character.h"
 # include "dungeon.h"
 
-class pc : public character
-{
+typedef enum eq_slot {
+  eq_slot_weapon,
+  eq_slot_offhand,
+  eq_slot_ranged,
+  eq_slot_light,
+  eq_slot_armor,
+  eq_slot_helmet,
+  eq_slot_cloak,
+  eq_slot_gloves,
+  eq_slot_boots,
+  eq_slot_amulet,
+  eq_slot_lring,
+  eq_slot_rring,
+  num_eq_slots
+} eq_slot_t;
+
+extern const char *eq_slot_name[num_eq_slots];
+
+class pc : public character {
+ private:
+  void recalculate_speed();
+  uint32_t has_open_inventory_slot();
+  int32_t get_first_open_inventory_slot();
+  object *from_pile(dungeon *d, pair_t pos);
  public:
-  ~pc() {}
+  pc();
+  ~pc();
+  object *eq[num_eq_slots];
+  object *in[MAX_INVENTORY];
+
+  uint32_t wear_in(uint32_t slot);
+  uint32_t remove_eq(uint32_t slot);
+  uint32_t drop_in(dungeon *d, uint32_t slot);
+  uint32_t destroy_in(uint32_t slot);
+  uint32_t pick_up(dungeon *d);
   terrain_type known_terrain[DUNGEON_Y][DUNGEON_X];
   uint8_t visible[DUNGEON_Y][DUNGEON_X];
-	object *equipment[12]; //equipment slots, array should be 12 long
-	/* equipment slots should have specific slots for each type
-	 * ie it has 1 WEAPON slot, 1 OFFHAND, 2 RING, 1 RANGED, etc.
-   * so when adding to equipment, check the type of the object, if the type
-   * matches an open slot, fill it, if not, need to figure out what to do
-   * probaby just add to carry or prompt a "swap" command I suppose
-	 */
-	object *carry[10]; //carry slots, array should be 10 long
-	int numcarry;
-	char eslots[13] = "abcdefghijkl"; //'marker' array for equipment slots
-	//get the correct object in equipment by matching players input letter to the array position from this array
 };
 
 void pc_delete(pc *pc);
@@ -38,10 +58,5 @@ void pc_init_known_terrain(pc *p);
 void pc_observe_terrain(pc *p, dungeon *d);
 int32_t is_illuminated(pc *p, int16_t y, int16_t x);
 void pc_reset_visibility(pc *p);
-int32_t wear_object(pc *p, int carryslot); //returns 0 if wearobject successful, 1 otherwise
-int32_t takeoff_object(pc *p, int equipslot); //returns 0 if takeoff successful, 1 otherwise
-// do these ^ guys need to return anything? Can the PC fail to wear an item?
-void pickup_object(dungeon *d, int slot);
-void drop_object(dungeon *d, int slot);
-void expunge_object(dungeon *d, int slot);
+
 #endif

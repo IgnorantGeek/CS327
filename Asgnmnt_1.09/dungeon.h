@@ -26,6 +26,7 @@
 #define DUNGEON_SAVE_VERSION   0U
 #define MONSTER_DESC_FILE      "monster_desc.txt"
 #define OBJECT_DESC_FILE       "object_desc.txt"
+#define MAX_INVENTORY          10
 
 #define mappair(pair) (d->map[pair[dim_y]][pair[dim_x]])
 #define mapxy(x, y) (d->map[y][x])
@@ -109,7 +110,7 @@ int read_dungeon(dungeon *d, char *file);
 int read_pgm(dungeon *d, char *pgm);
 void render_distance_map(dungeon *d);
 void render_tunnel_distance_map(dungeon *d);
-void init_dungeon(dungeon_t *d);
+void init_dungeon(dungeon *d);
 void pc_see_object(character *the_pc, object *o);
 
 #endif
