@@ -4,10 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
-#include "action.h"
 
 //base class for items, animates, inanimates, and containers
-class object
+class object //: public data
 {
     protected:
         char *name;

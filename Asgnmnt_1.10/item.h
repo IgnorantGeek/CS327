@@ -2,6 +2,7 @@
  #define ITEM_H
 
 #include "object.h"
+#include "action.h"
 #include <vector>
 
 /**Need to figure out this state thing
