@@ -272,7 +272,7 @@ static void io_redisplay_visible_monsters(dungeon *d, pair_t cursor)
         case ter_floor_water:
           attron(COLOR_PAIR(COLOR_BLUE));
           mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
-                  d->PC->position[dim_x] + pos[dim_x], '?');
+                  d->PC->position[dim_x] + pos[dim_x], '!');
           attroff(COLOR_PAIR(COLOR_BLUE));
           break; 
         default:
@@ -407,7 +407,7 @@ void io_display(dungeon *d)
           break;
         case ter_floor_water:
           attron(COLOR_PAIR(COLOR_BLUE));
-          mvaddch(pos[dim_y] + 1, pos[dim_x], '?');
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '!');
           attroff(COLOR_PAIR(COLOR_BLUE));
           break;
         default:
@@ -530,7 +530,7 @@ void io_display_no_fog(dungeon *d)
           break;
         case ter_floor_water:
           attron(COLOR_PAIR(COLOR_BLUE));
-          mvaddch(y + 1, x, '?');
+          mvaddch(y + 1, x, '!');
           attroff(COLOR_PAIR(COLOR_BLUE));
           break;
         default:
@@ -639,7 +639,7 @@ uint32_t io_teleport_pc(dungeon *d)
       break;
     case ter_floor_water:
       attron(COLOR_PAIR(COLOR_BLUE));
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '?');
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '!');
       attroff(COLOR_PAIR(COLOR_BLUE));
       break;
     default:
@@ -1278,7 +1278,7 @@ static uint32_t io_inspect_monster(dungeon *d)
       break;
     case ter_floor_water:
       attron(COLOR_PAIR(COLOR_BLUE));
-      mvaddch(dest[dim_y] + 1, dest[dim_x], '?');
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '!');
       attroff(COLOR_PAIR(COLOR_BLUE));
       break;
     default:
