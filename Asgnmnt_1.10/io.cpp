@@ -263,6 +263,18 @@ static void io_redisplay_visible_monsters(dungeon *d, pair_t cursor)
           mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
                   d->PC->position[dim_x] + pos[dim_x], '>');
           break;
+        case ter_floor_lava:
+          attron(COLOR_PAIR(COLOR_RED));
+          mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
+                  d->PC->position[dim_x] + pos[dim_x], '!');
+          attroff(COLOR_PAIR(COLOR_RED));
+          break;
+        case ter_floor_water:
+          attron(COLOR_PAIR(COLOR_BLUE));
+          mvaddch(d->PC->position[dim_y] + pos[dim_y] + 1,
+                  d->PC->position[dim_x] + pos[dim_x], '?');
+          attroff(COLOR_PAIR(COLOR_BLUE));
+          break; 
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */
@@ -388,6 +400,16 @@ void io_display(dungeon *d)
         case ter_stairs_down:
           mvaddch(pos[dim_y] + 1, pos[dim_x], '>');
           break;
+        case ter_floor_lava:
+          attron(COLOR_PAIR(COLOR_RED));
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '!');
+          attroff(COLOR_PAIR(COLOR_RED));
+          break;
+        case ter_floor_water:
+          attron(COLOR_PAIR(COLOR_BLUE));
+          mvaddch(pos[dim_y] + 1, pos[dim_x], '?');
+          attroff(COLOR_PAIR(COLOR_BLUE));
+          break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */
@@ -501,6 +523,16 @@ void io_display_no_fog(dungeon *d)
         case ter_stairs_down:
           mvaddch(y + 1, x, '>');
           break;
+        case ter_floor_lava:
+          attron(COLOR_PAIR(COLOR_RED));
+          mvaddch(y + 1, x, '!');
+          attroff(COLOR_PAIR(COLOR_RED));
+          break;
+        case ter_floor_water:
+          attron(COLOR_PAIR(COLOR_BLUE));
+          mvaddch(y + 1, x, '?');
+          attroff(COLOR_PAIR(COLOR_BLUE));
+          break;
         default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
   * not otherwise used.                                                 */
@@ -599,6 +631,16 @@ uint32_t io_teleport_pc(dungeon *d)
       break;
     case ter_stairs_down:
       mvaddch(dest[dim_y] + 1, dest[dim_x], '>');
+      break;
+    case ter_floor_lava:
+      attron(COLOR_PAIR(COLOR_RED));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '!');
+      attroff(COLOR_PAIR(COLOR_RED));
+      break;
+    case ter_floor_water:
+      attron(COLOR_PAIR(COLOR_BLUE));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '?');
+      attroff(COLOR_PAIR(COLOR_BLUE));
       break;
     default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *
@@ -1228,6 +1270,16 @@ static uint32_t io_inspect_monster(dungeon *d)
       break;
     case ter_stairs_down:
       mvaddch(dest[dim_y] + 1, dest[dim_x], '>');
+      break;
+    case ter_floor_lava:
+      attron(COLOR_PAIR(COLOR_RED));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '!');
+      attroff(COLOR_PAIR(COLOR_RED));
+      break;
+    case ter_floor_water:
+      attron(COLOR_PAIR(COLOR_BLUE));
+      mvaddch(dest[dim_y] + 1, dest[dim_x], '?');
+      attroff(COLOR_PAIR(COLOR_BLUE));
       break;
     default:
  /* Use zero as an error symbol, since it stands out somewhat, and it's *

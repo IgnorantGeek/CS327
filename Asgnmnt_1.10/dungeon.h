@@ -47,7 +47,9 @@ enum __attribute__ ((__packed__)) terrain_type {
   ter_floor_hall,
   ter_stairs,
   ter_stairs_up,
-  ter_stairs_down
+  ter_stairs_down,
+  ter_floor_lava,
+  ter_floor_water
 };
 
 typedef struct room {

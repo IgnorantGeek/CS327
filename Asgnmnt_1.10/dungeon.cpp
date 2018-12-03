@@ -548,6 +548,30 @@ static int place_rooms(dungeon *d)
   return 0;
 }
 
+//Places pools of water and lava in the game
+static void place_pools(dungeon *d)
+{
+  //each room has a 33.3% chance of having a pool. Each pool has 50% chance of being either lava or water
+  //need to generate a random size for the pool, which will require parameters. 
+  //Need max and min pool sizes. Max should be based on the room it is in. Min so that pools have a real width and height
+  int i, place, type;
+  for (i = 0; i < (int) d->num_rooms; i++)
+  {
+    place = rand();
+    if (place % 3 == 0)
+    {
+      type = rand(); //randomizes the pool type
+      terrain_type terr;
+      if (type % 2 == 0) terr = ter_floor_lava;
+      else terr = ter_floor_water;
+      pair_t p;
+      p[dim_x] = d->rooms[i].position[dim_x];
+      p[dim_y] = d->rooms[i].position[dim_y];
+      mappair(p) = terr; //just place one pool identifier to make sure it is working
+    }
+  }
+}
+
 static void place_stairs(dungeon *d)
 {
   pair_t p;
@@ -602,6 +626,7 @@ int gen_dungeon(dungeon *d)
   } while (place_rooms(d));
   connect_rooms(d);
   place_stairs(d);
+  place_pools(d);
 
   return 0;
 }
