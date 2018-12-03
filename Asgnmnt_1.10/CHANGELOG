@@ -1,8 +1,0 @@
-(11/24) Begin brainstorming ideas.
-(11/24) I want to make a text based puzzle game. Begin working on that
-(11/25) going to make the game a general puzzle API that will read a text based language and create a game
-(11/26) Just going to make an escape the room type game. API is too complex
-(11/26) Game is too easy, going to try to make a game framework as a compromise
-(11/27) Idea for some sort of action system that will "link" actions with objects
-(11/27) Begin implementing all objects and helper methods
-(11/28) Need to figure out solution for actions issue. How to store necessary info and link actions to objects?
