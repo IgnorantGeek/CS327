@@ -10,9 +10,58 @@
 #include "io.h"
 #include "object.h"
 
+const char *eq_slot_name[num_eq_slots] = {
+  "weapon",
+  "offhand",
+  "ranged",
+  "light",
+  "armor",
+  "helmet",
+  "cloak",
+  "gloves",
+  "boots",
+  "amulet",
+  "lh ring",
+  "rh ring"
+};
+
+pc::pc()
+{
+  uint32_t i;
+
+  for (i = 0; i < num_eq_slots; i++) {
+    eq[i] = 0;
+  }
+
+  for (i = 0; i < MAX_INVENTORY; i++) {
+    in[i] = 0;
+  }
+
+  hp = 1000;
+}
+
+pc::~pc()
+{
+  uint32_t i;
+
+  for (i = 0; i < MAX_INVENTORY; i++) {
+    if (in[i]) {
+      delete in[i];
+      in[i] = NULL;
+    }
+  }
+    
+  for (i = 0; i < num_eq_slots; i++) {
+    if (eq[i]) {
+      delete eq[i];
+      eq[i] = NULL;
+    }
+  }
+}
+
 uint32_t pc_is_alive(dungeon *d)
 {
-  return d->PC->alive;
+  return d->PC && d->PC->alive;
 }
 
 void place_pc(dungeon *d)
@@ -26,6 +75,8 @@ void place_pc(dungeon *d)
 
   pc_init_known_terrain(d->PC);
   pc_observe_terrain(d->PC, d);
+
+  io_display(d);
 }
 
 void config_pc(dungeon *d)
@@ -44,19 +95,10 @@ void config_pc(dungeon *d)
   d->PC->kills[kill_direct] = d->PC->kills[kill_avenged] = 0;
   d->PC->color.push_back(COLOR_WHITE);
   d->PC->damage = &pc_dice;
-  d->PC->name = "Avatar Krysta"; // PC name field
-	d->PC->hp = 100;
+  d->PC->name = "Isabella Garcia-Shapiro";
+
   d->character_map[character_get_y(d->PC)][character_get_x(d->PC)] = d->PC;
 
-  // initializes object pointer arrays to null
-  int i;
-  for (i = 0; i < 12; i++)
-  {
-    d->PC->equipment[i] = nullptr;
-    if (i < 10)
-    d->PC->carry[i] = nullptr;
-  }
-  d->PC->numcarry = 0;
   dijkstra(d);
   dijkstra_tunnel(d);
 }
@@ -246,7 +288,7 @@ void pc_observe_terrain(pc *p, dungeon *d)
     can_see(d, p->position, where, 1, 1);
     where[dim_y] = y_max;
     can_see(d, p->position, where, 1, 1);
-  }
+  }       
 }
 
 int32_t is_illuminated(pc *p, int16_t y, int16_t x)
@@ -261,221 +303,157 @@ void pc_see_object(character *the_pc, object *o)
   }
 }
 
-//adds object to equipment, returns 0 if successful
-int32_t wear_object(pc *p, int carryslot)
+void pc::recalculate_speed()
 {
-  object *o = p->carry[carryslot];
-  switch (o->get_type())
-  {
-    case objtype_WEAPON:
-      if (p->equipment[0] == NULL)
-      {
-        p->equipment[0] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[0];
-        p->carry[carryslot] = hold;
-        p->equipment[0] = o;
-      }
-      break;
-    case objtype_OFFHAND:
-    if (p->equipment[1] == NULL)
-    {
-      p->equipment[1] = o;
-    }
-    else
-    {
-      object *hold = p->equipment[1];
-      p->carry[carryslot] = hold;
-      p->equipment[1] = o;
-    }
-      break;
-    case objtype_RANGED:
-      if (p->equipment[2] == NULL)
-      {
-        p->equipment[2] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[2];
-        p->carry[carryslot] = hold;
-        p->equipment[2] = o;
-      }
-      break;
-    case objtype_ARMOR:
-      if (p->equipment[3] == NULL)
-      {
-        p->equipment[3] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[3];
-        p->carry[carryslot] = hold;
-        p->equipment[3] = o;
-      }
-      break;
-    case objtype_HELMET:
-      if (p->equipment[4] == NULL)
-      {
-        p->equipment[4] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[4];
-        p->carry[carryslot] = hold;
-        p->equipment[4] = o;
-      }
-      break;
-    case objtype_CLOAK:
-      if (p->equipment[5] == NULL)
-      {
-        p->equipment[5] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[5];
-        p->carry[carryslot] = hold;
-        p->equipment[5] = o;
-      }
-      break;
-    case objtype_GLOVES:
-      if (p->equipment[6] == NULL)
-      {
-        p->equipment[6] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[6];
-        p->carry[carryslot] = hold;
-        p->equipment[6] = o;
-      }
-      break;
-    case objtype_BOOTS:
-      if (p->equipment[7] == NULL)
-      {
-        p->equipment[7] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[7];
-        p->carry[carryslot] = hold;
-        p->equipment[7] = o;
-      }
-      break;
-    case objtype_AMULET:
-      if (p->equipment[8] == NULL)
-      {
-        p->equipment[8] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[8];
-        p->carry[carryslot] = hold;
-        p->equipment[8] = o;
-      }
-      break;
-    case objtype_LIGHT:
-      if (p->equipment[9] == NULL)
-      {
-        p->equipment[9] = o;
-      }
-      else
-      {
-        object *hold = p->equipment[9];
-        p->carry[carryslot] = hold;
-        p->equipment[9] = o;
-      }
-      break;
-    case objtype_RING:
-      if (p->equipment[10] == NULL)
-      {
-        p->equipment[10] = o;
-      }
-      else if(p->equipment[11] == NULL)
-      {
-        p->equipment[11] = o;
-      }
-      else
-      {
-        //swaps second ring for a carry
-        object *hold = p->equipment[11];
-        p->carry[carryslot] = hold;
-        p->equipment[11] = o;
-      }
-      break;
-  }
-  return 1;
-}
+  int i;
 
-// adds object to carry, returns 0 if succesful
-int32_t takeoff_object(pc *p, int equipslot)
-{
-  return 1;
-}
-
-//TODO fix so the order is the same
-void refactor_carry(pc *p)
-{
-  // move all the null pointers to the end of the array
-  int i, j;
-  for (i = 9; i >= 0; i--)
-  {
-    if (p->carry[i] != nullptr)
-    {
-      for (j = 0; j < i; j++)
-      {
-        if (p->carry[j] == nullptr)
-        {
-          p->carry[j] = p->carry[i];
-          p->carry[i] = nullptr;
-          break;
-        }
-      }
+  for (speed = PC_SPEED, i = 0; i < num_eq_slots; i++) {
+    if (eq[i]) {
+      speed += eq[i]->get_speed();
     }
   }
-}
 
-void pickup_object(dungeon *d, int slot)
-{
-  // just need to move the object at the current PC location to the PC inventory
-  // remove object from dungeon object map
-  // if slot is -1 append the object to the end of carry
-  pair_t currlocation;
-  currlocation[dim_y] = d->PC->position[dim_y];
-  currlocation[dim_x] = d->PC->position[dim_x];
-  object *obj = objpair(currlocation);
-  objpair(currlocation) = nullptr; // remove object from dungeon map
-  if (slot == -1)
-  {
-    // add obj to end of d->PC->carry
-    d->PC->carry[d->PC->numcarry] = obj;
+  if (speed <= 0) {
+    speed = 1;
   }
-  else 
-  {
-    d->PC->carry[slot] = obj;
+}
+
+uint32_t pc::wear_in(uint32_t slot)
+{
+  object *tmp;
+  uint32_t i;
+
+  if (!in[slot] || !in[slot]->is_equipable()) {
+    return 1;
   }
-  // free(obj);
-  d->PC->numcarry++;
+
+  /* Rings are tricky since there are two slots.  We will alwas favor *
+   * an empty slot, and if there is no empty slot, we'll use the      *
+   * first slot.                                                      */
+  i = in[slot]->get_eq_slot_index();
+  if (eq[i] &&
+      ((eq[i]->get_type() == objtype_RING) &&
+       !eq[i + 1])) {
+    i++;
+  }
+
+  tmp = in[slot];
+  in[slot] = eq[i];
+  eq[i] = tmp;
+
+  io_queue_message("You wear %s.", eq[i]->get_name());
+
+  recalculate_speed();
+
+  return 0;
 }
 
-void drop_object(dungeon *d, int slot)
+uint32_t pc::has_open_inventory_slot()
 {
-  // move object from carry to floor
-  pair_t currlocation;
-  currlocation[dim_y] = d->PC->position[dim_y];
-  currlocation[dim_x] = d->PC->position[dim_x];
-  object *obj = d->PC->carry[slot];
-  objpair(currlocation) = obj;
-  d->PC->carry[slot] = nullptr;
-  d->PC->numcarry--;
-  refactor_carry(d->PC);
+  int i;
+
+  for (i = 0; i < MAX_INVENTORY; i++) {
+    if (!in[i]) {
+      return 1;
+    }
+  }
+
+  return 0;
 }
 
-void expunge_object(dungeon *d, int slot)
+int32_t pc::get_first_open_inventory_slot()
 {
-  delete d->PC->carry[slot];
-  d->PC->carry[slot] = nullptr;
-  refactor_carry(d->PC);
-  d->PC->numcarry--;
+  int i;
+
+  for (i = 0; i < MAX_INVENTORY; i++) {
+    if (!in[i]) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+uint32_t pc::remove_eq(uint32_t slot)
+{
+  if (!eq[slot]                      ||
+      !in[slot]->is_removable() ||
+      !has_open_inventory_slot()) {
+    io_queue_message("You can't remove %s, because you have nowhere to put it.",
+                     eq[slot]->get_name());
+
+    return 1;
+  }
+
+  io_queue_message("You remove %s.", eq[slot]->get_name());
+
+  in[get_first_open_inventory_slot()] = eq[slot];
+  eq[slot] = NULL;
+
+
+  recalculate_speed();
+
+  return 0;
+}
+
+uint32_t pc::drop_in(dungeon *d, uint32_t slot)
+{
+  if (!in[slot] || !in[slot]->is_dropable()) {
+    return 1;
+  }
+
+  io_queue_message("You drop %s.", in[slot]->get_name());
+
+  in[slot]->to_pile(d, position);
+  in[slot] = NULL;
+
+  return 0;
+}
+
+uint32_t pc::destroy_in(uint32_t slot)
+{
+  if (!in[slot] || !in[slot]->is_destructable()) {
+    return 1;
+  }
+
+  io_queue_message("You destroy %s.", in[slot]->get_name());
+
+  delete in[slot];
+  in[slot] = NULL;
+
+  return 0;
+}
+
+uint32_t pc::pick_up(dungeon *d)
+{
+  object *o;
+
+  while (has_open_inventory_slot() &&
+         d->objmap[position[dim_y]][position[dim_x]]) {
+    io_queue_message("You pick up %s.",
+                     d->objmap[position[dim_y]][position[dim_x]]->get_name());
+    d->objmap[position[dim_y]][position[dim_x]]->pick_up();
+    in[get_first_open_inventory_slot()] =
+      from_pile(d, position);
+  }
+
+  for (o = d->objmap[position[dim_y]][position[dim_x]];
+       o;
+       o = o->get_next()) {
+    io_queue_message("You have no room for %s.", o->get_name());
+  }
+
+  return 0;
+}
+
+object *pc::from_pile(dungeon *d, pair_t pos)
+{
+  object *o;
+
+  if ((o = (object *) d->objmap[pos[dim_y]][pos[dim_x]])) {
+    d->objmap[pos[dim_y]][pos[dim_x]] = o->get_next();
+    o->set_next(0);
+  }
+
+  return o;
 }

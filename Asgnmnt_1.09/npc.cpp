@@ -754,3 +754,20 @@ npc::~npc()
     md.die() ;
   }
 }
+
+bool boss_is_alive(dungeon *d)
+{
+  std::vector<monster_description>::iterator i;
+
+  /* There's no requirement that there be only    *
+   * one boss, so we need to check every monster. */
+  for (i = d->monster_descriptions.begin();
+       i != d->monster_descriptions.end();
+       i++) {
+    if ((i->abilities & NPC_BOSS) && i->num_killed) {
+      return false;
+    }
+  }
+
+  return true;
+}

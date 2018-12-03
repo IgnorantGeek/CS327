@@ -36,7 +36,7 @@ object::~object()
   }
 }
 
-void gen_object(dungeon_t *d)
+void gen_object(dungeon *d)
 {
   object *o;
   uint32_t room;
@@ -64,7 +64,7 @@ void gen_object(dungeon_t *d)
   
 }
 
-void gen_objects(dungeon_t *d)
+void gen_objects(dungeon *d)
 {
   uint32_t i;
 
@@ -102,7 +102,7 @@ int32_t object::roll_dice()
   return damage.roll();
 }
 
-void destroy_objects(dungeon_t *d)
+void destroy_objects(dungeon *d)
 {
   uint32_t y, x;
 
@@ -119,4 +119,40 @@ void destroy_objects(dungeon_t *d)
 int32_t object::get_type()
 {
   return type;
+}
+
+uint32_t object::is_equipable()
+{
+  return type >= objtype_WEAPON && type <= objtype_RING; 
+}
+
+uint32_t object::is_removable()
+{
+  return 1;
+}
+
+uint32_t object::is_dropable()
+{
+  return 1;
+}
+
+uint32_t object::is_destructable()
+{
+  return 1;
+}
+
+int32_t object::get_eq_slot_index()
+{
+  if (type < objtype_WEAPON ||
+      type > objtype_RING) {
+    return -1;
+  }
+
+  return type - 1;
+}
+
+void object::to_pile(dungeon *d, pair_t location)
+{
+  next = (object *) d->objmap[location[dim_y]][location[dim_x]];
+  d->objmap[location[dim_y]][location[dim_x]] = this;
 }

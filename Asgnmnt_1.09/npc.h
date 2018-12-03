@@ -42,6 +42,7 @@
 # define has_characteristic(character, bit)              \
   (((npc *) character)->characteristics & NPC_##bit)
 # define is_unique(character) has_characteristic(character, UNIQ)
+# define is_boss(character) has_characteristic(character, BOSS)
 
 class monster_description;
 
@@ -62,5 +63,6 @@ void gen_monsters(dungeon *d);
 void npc_delete(npc *n);
 void npc_next_pos(dungeon *d, npc *c, pair_t next);
 uint32_t dungeon_has_npcs(dungeon *d);
+bool boss_is_alive(dungeon *d);
 
 #endif

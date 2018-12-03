@@ -15,52 +15,101 @@
 #include "event.h"
 #include "io.h"
 #include "npc.h"
+#include "object.h"
 
 void do_combat(dungeon *d, character *atk, character *def)
 {
-  int can_see_atk, can_see_def;
+  uint32_t damage, i;
   const char *organs[] = {
-    "liver",                   /*  0 */
-    "pancreas",                /*  1 */
-    "heart",                   /*  2 */
-    "eye",                     /*  3 */
-    "arm",                     /*  4 */
-    "leg",                     /*  5 */
-    "intestines",              /*  6 */
-    "gall bladder",            /*  7 */
-    "lungs",                   /*  8 */
-    "hand",                    /*  9 */
-    "foot",                    /* 10 */
-    "spinal cord",             /* 11 */
-    "pituitary gland",         /* 12 */
-    "thyroid",                 /* 13 */
-    "tongue",                  /* 14 */
-    "bladder",                 /* 15 */
-    "diaphram",                /* 16 */
-    "stomach",                 /* 17 */
-    "pharynx",                 /* 18 */
-    "esophagus",               /* 19 */
-    "trachea",                 /* 20 */
-    "urethra",                 /* 21 */
-    "spleen",                  /* 22 */
-    "ganglia",                 /* 23 */
-    "ear",                     /* 24 */
-    "subcutaneous tissue"      /* 25 */
-    "cerebellum",              /* 26 */ /* Brain parts begin here */
-    "hippocampus",             /* 27 */
-    "frontal lobe",            /* 28 */
-    "brain",                   /* 29 */
+    "liver",
+    "pancreas",
+    "heart",
+    "brain",
+    "eye",
+    "arm",
+    "leg",
+    "intestines",
+    "gall bladder",
+    "lungs",
+    "hand",
+    "foot",
+    "spinal cord",
+    "pituitary gland",
+    "thyroid",
+    "tongue",
+    "bladder",
+    "diaphram",
+    "frontal lobe",
+    "hippocampus",
+    "stomach",
+    "pharynx",
+    "esophagus",
+    "trachea",
+    "urethra",
+    "spleen",
+    "cerebellum",
+    "ganglia",
+    "ear",
+    "subcutaneous tissue",
+    "prefrontal cortex"
   };
-  int part;
-
-  if (def->alive) {
-    def->alive = 0;
-    charpair(def->position) = NULL;
-    
-    if (def != d->PC) {
-      d->num_monsters--;
+  const char *attacks[] = {
+    "punches",
+    "kicks",
+    "stabs",
+    "impales",
+    "slashes",
+    "massages",
+    "soothes",
+    "bites",
+    "jabs",
+    "coerces",
+    "threatens",
+    "manipulates",
+    "arm locks",
+    "conquers",
+    "buries the hatchet in",
+    "indicates displeasure with",
+    "quarrels with",
+    "scrimmages with",
+    "tickles",
+    "engages in fisticuffs with",
+    "strikes",
+    "belts",
+    "wallops",
+    "gives the old one-two to",
+    "bumps into",
+    "behaves inappropriately with",
+    "smacks",
+    "body slams",
+    "fondues",
+    "flambes",
+    "pokes",
+    "anoints",
+  };
+  if (character_is_alive(def)) {
+    if (atk != d->PC) {
+      damage = atk->damage->roll();
+      io_queue_message("%s%s %s your %s for %d.", is_unique(atk) ? "" : "The ",
+                       atk->name, attacks[rand() % (sizeof (attacks) /
+                                                    sizeof (attacks[0]))],
+                       organs[rand() % (sizeof (organs) /
+                                        sizeof (organs[0]))], damage);
     } else {
-      if ((part = rand() % (sizeof (organs) / sizeof (organs[0]))) < 26) {
+      for (i = damage = 0; i < num_eq_slots; i++) {
+        if (i == eq_slot_weapon && !d->PC->eq[i]) {
+          damage += atk->damage->roll();
+        } else if (d->PC->eq[i]) {
+          damage += d->PC->eq[i]->roll_dice();
+        }
+      }
+      io_queue_message("You hit %s%s for %d.", is_unique(def) ? "" : "the ",
+                       def->name, damage);
+    }
+
+    if (damage >= def->hp) {
+      if (atk != d->PC) {
+        io_queue_message("You die.");
         io_queue_message("As %s%s eats your %s,", is_unique(atk) ? "" : "the ",
                          atk->name, organs[rand() % (sizeof (organs) /
                                                      sizeof (organs[0]))]);
@@ -69,55 +118,110 @@ void do_combat(dungeon *d, character *atk, character *def)
          * player to see above.                                          */
         io_queue_message("");
       } else {
-        io_queue_message("Your last thoughts fade away as "
-                         "%s%s eats your %s...",
-                         is_unique(atk) ? "" : "the ",
-                         atk->name, organs[part]);
-        io_queue_message("");
+        io_queue_message("%s%s dies.", is_unique(def) ? "" : "The ", def->name);
       }
-      /* Queue an empty message, otherwise the game will not pause for *
-       * player to see above.                                          */
-      io_queue_message("");
-    }
-    atk->kills[kill_direct]++;
-    atk->kills[kill_avenged] += (def->kills[kill_direct] +
-                                  def->kills[kill_avenged]);
-  }
-
-  if (atk == d->PC) {
-    io_queue_message("You smite %s%s!", is_unique(def) ? "" : "the ", def->name);
-  }
-
-  can_see_atk = can_see(d, character_get_pos(d->PC),
-                        character_get_pos(atk), 1, 0);
-  can_see_def = can_see(d, character_get_pos(d->PC),
-                        character_get_pos(def), 1, 0);
-
-  if (atk != d->PC && def != d->PC) {
-    if (can_see_atk && !can_see_def) {
-      io_queue_message("%s%s callously murders some poor, "
-                       "defenseless creature.",
-                       is_unique(atk) ? "" : "The ", atk->name);
-    }
-    if (can_see_def && !can_see_atk) {
-      io_queue_message("Something kills %s%s.",
-                       is_unique(def) ? "" : "the helpless ", def->name);
-    }
-    if (can_see_atk && can_see_def) {
-      io_queue_message("You watch in abject horror as %s%s "
-                       "gruesomely murders %s%s!",
-                       is_unique(atk) ? "" : "the ", atk->name,
-                       is_unique(def) ? "" : "the ", def->name);
+      def->hp = 0;
+      def->alive = 0;
+      character_increment_dkills(atk);
+      character_increment_ikills(atk, (character_get_dkills(def) +
+                                       character_get_ikills(def)));
+      if (def != d->PC) {
+        d->num_monsters--;
+      }
+      charpair(def->position) = NULL;
+    } else {
+      def->hp -= damage;
     }
   }
 }
 
 void move_character(dungeon *d, character *c, pair_t next)
 {
+  int can_see_atk, can_see_def;
+  pair_t displacement;
+  uint32_t found_cell;
+  pair_t order[9] = {
+    { -1, -1 },
+    { -1,  0 },
+    { -1,  1 },
+    {  0, -1 },
+    {  0,  0 },
+    {  0,  1 },
+    {  1, -1 },
+    {  1,  0 },
+    {  1,  1 },
+  };
+  uint32_t s, i;
+
   if (charpair(next) &&
       ((next[dim_y] != c->position[dim_y]) ||
        (next[dim_x] != c->position[dim_x]))) {
-    do_combat(d, c, charpair(next));
+    if ((charpair(next) == d->PC) ||
+        c == d->PC) {
+      do_combat(d, c, charpair(next));
+    } else {
+      /* Easiest way for a monster to displace another monster is *
+       * to swap them.  This could lead to some strangeness where *
+       * two monsters of the exact same speed continually         *
+       * displace each other and never make progress, but I don't *
+       * have any real problem with that.  When we have better    *
+       * game balance, weaker monsters should not be able to      *
+       * displace stronger monsters.                              */
+      /* Turns out I don't like swapping them after all.  We'll   *
+       * instead select a random square from the 8 surrounding    *
+       * the target cell.  Keep doing it until either we swap or  *
+       * find an empty one for the displacement.                  */
+      for (s = rand() % 9, found_cell = i = 0;
+           i < 9 && !found_cell; i++) {
+        displacement[dim_y] = next[dim_y] + order[s % 9][dim_y];
+        displacement[dim_x] = next[dim_x] + order[s % 9][dim_x];
+        if (((npc *) charpair(next))->characteristics & NPC_PASS_WALL) {
+          if (!charpair(displacement) ||
+              (charpair(displacement) == c)) {
+            found_cell = 1;
+          }
+        } else {
+          if ((!charpair(displacement) &&
+               (mappair(displacement) >= ter_floor)) ||
+              (charpair(displacement) == c)) {
+            found_cell = 1;
+          }
+        }
+      }
+
+      if (!found_cell) {
+        return;
+      }
+
+      assert(charpair(next));
+
+      can_see_atk = can_see(d, character_get_pos(d->PC),
+                            character_get_pos(c), 1, 0);
+      can_see_def = can_see(d, character_get_pos(d->PC),
+                            character_get_pos(charpair(next)), 1, 0);
+
+      if (can_see_atk && can_see_def) {
+        io_queue_message("%s%s pushes %s%s out of the way.  How rude.",
+                         is_unique(c) ? "" : "The ", c->name,
+                         is_unique(charpair(next)) ? "" : "the ",
+                         charpair(next)->name);
+      } else if (can_see_atk) {
+        io_queue_message("%s%s angrily shoves something out of the way.",
+                         is_unique(c) ? "" : "The ", c->name);
+      } else if (can_see_def) {
+        io_queue_message("Something slams %s%s out of the way.",
+                          is_unique(charpair(next)) ? "" : "the ",
+                         charpair(next)->name);
+      }
+
+      charpair(c->position) = NULL;
+      charpair(displacement) = charpair(next);
+      charpair(next) = c;
+      charpair(displacement)->position[dim_y] = displacement[dim_y];
+      charpair(displacement)->position[dim_x] = displacement[dim_x];
+      c->position[dim_y] = next[dim_y];
+      c->position[dim_x] = next[dim_x];
+    }
   } else {
     /* No character in new position. */
 
@@ -128,8 +232,8 @@ void move_character(dungeon *d, character *c, pair_t next)
   }
 
   if (c == d->PC) {
-    pc_reset_visibility(d->PC);
-    pc_observe_terrain(d->PC, d);
+    pc_reset_visibility((pc *) c);
+    pc_observe_terrain((pc *) c, d);
   }
 }
 
@@ -248,14 +352,21 @@ static void new_dungeon_level(dungeon *d, uint32_t dir)
 
   switch (dir) {
   case '<':
+    io_queue_message("You go up the stairs.");
+    io_queue_message(""); /* To force "more" */
+    io_display(d); /* To force queue flush */
+    new_dungeon(d);
+    break;
   case '>':
+    io_queue_message("You go down the stairs.");
+    io_queue_message(""); /* To force "more" */
+    io_display(d); /* To force queue flush */
     new_dungeon(d);
     break;
   default:
     break;
   }
 }
-
 
 uint32_t move_pc(dungeon *d, uint32_t dir)
 {
@@ -328,6 +439,7 @@ uint32_t move_pc(dungeon *d, uint32_t dir)
     move_character(d, d->PC, next);
     dijkstra(d);
     dijkstra_tunnel(d);
+    d->PC->pick_up(d);
 
     return 0;
   } else if (mappair(next) < ter_floor) {

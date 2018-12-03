@@ -818,7 +818,7 @@ static uint32_t parse_object_description(std::ifstream &f,
 }
 
 static uint32_t parse_monster_descriptions(std::ifstream &f,
-                                           dungeon_t *d,
+                                           dungeon *d,
                                            std::vector<monster_description> *v)
 {
   std::string s;
@@ -848,7 +848,7 @@ static uint32_t parse_monster_descriptions(std::ifstream &f,
 }
 
 static uint32_t parse_object_descriptions(std::ifstream &f,
-                                          dungeon_t *d,
+                                          dungeon *d,
                                           std::vector<object_description> *v)
 {
   std::string s;
@@ -877,7 +877,7 @@ static uint32_t parse_object_descriptions(std::ifstream &f,
   return 0;
 }
 
-uint32_t parse_descriptions(dungeon_t *d)
+uint32_t parse_descriptions(dungeon *d)
 {
   std::string file;
   std::ifstream f;
@@ -916,7 +916,7 @@ uint32_t parse_descriptions(dungeon_t *d)
   return retval;
 }
 
-uint32_t print_descriptions(dungeon_t *d)
+uint32_t print_descriptions(dungeon *d)
 {
   std::vector<monster_description> &m = d->monster_descriptions;
   std::vector<monster_description>::iterator mi;
@@ -995,7 +995,7 @@ std::ostream &operator<<(std::ostream &o, monster_description &m)
   return m.print(o);
 }
 
-uint32_t destroy_descriptions(dungeon_t *d)
+uint32_t destroy_descriptions(dungeon *d)
 {
   d->monster_descriptions.clear();
   d->object_descriptions.clear();
