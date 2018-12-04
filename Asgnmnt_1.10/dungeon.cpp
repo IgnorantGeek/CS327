@@ -565,8 +565,22 @@ static void place_pools(dungeon *d)
       if (type % 2 == 0) terr = ter_floor_lava;
       else terr = ter_floor_water;
       pair_t p;
-      p[dim_x] = d->rooms[i].position[dim_x];
-      p[dim_y] = d->rooms[i].position[dim_y];
+      //need random dimensions for the pool
+      int rwidth = rand_range(2,5);
+      int rheight = rand_range(2,5);
+      p[dim_y] = rand_range(d->rooms[i].position[dim_y],(d->rooms[i].position[dim_y] + d->rooms[i].size[dim_y] - 1));
+      p[dim_x] = rand_range(d->rooms[i].position[dim_x],(d->rooms[i].position[dim_x] + d->rooms[i].size[dim_x] - 1));
+      int x,y;
+      for (x = 0;x<rheight;x++)
+      {
+        for (y=0;y<rwidth;y++)
+        {
+          if(mapxy(p[dim_x] + x,p[dim_y] + y) == ter_floor_room)
+          {
+            mapxy(p[dim_x] + x,p[dim_y] + y) = terr;
+          }
+        }
+      }
       mappair(p) = terr; //just place one pool identifier to make sure it is working
     }
   }
