@@ -231,6 +231,29 @@ void move_character(dungeon *d, character *c, pair_t next)
     d->character_map[c->position[dim_y]][c->position[dim_x]] = c;
   }
 
+  
+      if(d->map[c->position[dim_y]][c->position[dim_x]] == ter_floor_water && !c->in_water)
+      {
+          if(c == d->PC) {
+              io_queue_message("You stepped in water, your speed has been cut in half!");
+          }
+          c->speed = c->speed / 2;
+          c->in_water = 1;
+      }
+
+      if(d->map[c->position[dim_y]][c->position[dim_x]] != ter_floor_water && c->in_water)
+      {
+          c->speed = c->speed * 2;
+          c->in_water = 0;
+      }
+
+      if(d->map[c->position[dim_y]][c->position[dim_x]] == ter_floor_lava){
+          c->hp = c->hp - 50;
+          if(c == d->PC) {
+              io_queue_message("You stepped in lava! -50 HP!!");
+          }
+      }
+
   if (c == d->PC) {
     pc_reset_visibility((pc *) c);
     pc_observe_terrain((pc *) c, d);
