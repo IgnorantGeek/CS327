@@ -1,4 +1,2 @@
-This iteration adds funcitonality for PC inventory and object pickup. Pickup is not automatic,
-the PC can trigger an item pickup by pressing ','. PC carry inventory works, but I could 
-not get the equipment inventory to print so I have not implemented that or wearing/taking off items.
-Did not have time to do damage system updates. This one sucked.
+This update adds lava and water terrain to the game. Both affect all characters. Stepping in lava results in the character
+losing 50 HP and stepping in water causes the speed of the character to be cut in half. 
